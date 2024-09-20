@@ -1,0 +1,31 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Login</title>
+</head>
+
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 pt-20">
+    <!--Nav bar-->
+    <nav class="w-full bg-primary text-white py-4 fixed top-0">
+        <div class="container mx-auto text-center">
+            <h2 class="font-semibold text-2xl flex items-center justify-center gap-x-2"><span class="material-symbols-outlined">
+                account_balance</span>Bank Name</h2>
+        </div>
+    </nav>
+    <!--Account number part-->
+    <div class="w-full max-w-xs absolute top-40">
+        <label for="price" class="block text-sm font-medium leading-6 text-gray-900 text-center">Enter your account number to Login</label>
+        <div class="relative mt-2 rounded-md shadow-sm">
+            <form action="/login" method="POST">
+                <input type="text" name="price" id="price" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Account number">  
+                <button href="" class="btn btn-primary mt-4 mx-auto rounded-md w-max flex gap-x-1.5 items-center">Log in</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
