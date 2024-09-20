@@ -86,7 +86,7 @@ function refreshDetails() {
 
             targetName[0].innerText = name; // Change name within the document
             targetNumber[0].innerText = "Account number: " + number; // Change account number within the document
-            targetBalance[0].innerText = balance; // Change balance within the document
+            targetBalance[0].innerText = "£" + balance; // Change balance within the document
 
             // Calculate current level and points remaining until next level
             let values = calculateLevel(greenScore);
@@ -96,7 +96,7 @@ function refreshDetails() {
                 targetLevels[i].innerText = "Level " + values[0];
             }
             document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
-            targetPointsRemaining[0].innerText = values[1];
+            targetPointsRemaining[0].innerText = Math.round(values[1]);
         })
         .catch((error) => {
             console.error(error);
