@@ -26,7 +26,6 @@ async function parseJSONObject(type) {
                             userObject = data[0];
                             resolve(userObject);
                         })
-                    console.log('Fetch completed.')
                 })
             })
             break;
@@ -65,9 +64,24 @@ function calculateCompanyGreenLevel(score) {
     return Math.round((divided + Number.EPSILON) * 100) / 100; // Rounds to 2 decimals
 }
 
+// Hides main content while API fetch completes, instead showing a loader
+function hideMainHomePage() {
+    document.getElementsByClassName("full")[0].style.visibility='hidden';
+    document.getElementsByClassName("loader")[0].style.visibility='visible';
+}
+
+// Shows main content (intended after fetch completes), and hides loader
+function showMainHomePage() {
+    document.getElementsByClassName("full")[0].style.visibility='visible';
+    document.getElementsByClassName("loader")[0].style.visibility='hidden';
+}
+
 // Refreshes the home page for current account details, and sets appropriate text.
 // It's a bit slow... Should look at this again soon to understand why.
+// Show loading page for 2 seconds before displaying actual page.
 async function refreshHomePage() {
+    hideMainHomePage();
+    setTimeout(() => {showMainHomePage()}, 1200);
     const object = await parseJSONObject('Account')
 
     targetName[0].innerText = object.name; // Change name within the document
