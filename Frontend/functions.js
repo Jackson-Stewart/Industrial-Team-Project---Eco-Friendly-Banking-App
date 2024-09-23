@@ -27,7 +27,7 @@ async function parseJSONObject(type) {
                             resolve(userObject);
                         })
                     console.log('Fetch completed.')
-                }, 2000)
+                })
             })
             break;
         case "Company":
