@@ -1,30 +1,34 @@
-const url = "https://zw829ww08l.execute-api.us-east-1.amazonaws.com/default";
+const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-window.onload = refreshDetails;
+window.onload = refreshHomePage; // Refresh home page as soon as page loads.
+
 var targetName = document.getElementsByClassName("accountName");
 var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
 
-function parseJSONObject(type) {
+async function parseJSONObject(type) {
     // Call API, get requested content and change into JSON object
-    var userObject = '';
+    let userObject = '';
     switch (type) {
         case "Account":
-            const apiUrl = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com/api?accountNumber=1";
+            return new Promise((resolve, reject) => {
+                const apiUrl = url + "/api?accountNumber=1";
 
-            fetch(apiUrl, {
-                method: 'GET',
+                setTimeout(() => {
+                    fetch(apiUrl, {
+                        cache: 'no-cache',
+                        method: 'GET',
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            userObject = data[0];
+                            resolve(userObject);
+                        })
+                    console.log('Fetch completed.')
+                }, 2000)
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    userObject = data[0].name
-                    return userObject;
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
             break;
         case "Company":
             // TODO
@@ -37,26 +41,14 @@ function parseJSONObject(type) {
     }
 }
 
-function parseAccountDetails() {
-    // Take JSON object
-    let obj = parseJSONObject("Account");
-    console.log(obj);
-    // if (obj === '') {
-    //     console.log(obj);
-    //     return -1;
-    // }
-
-    // Return details of user
-    return obj;
-}
-
+// calculateLevel: calculates user's level, given the current numeric score
 function calculateLevel(score) {
     // STREAK IGNORED, SHOULD BE FACTORED INTO CALCULATION SOON
 
     let remaining = 0;
     // (Level/0.3)^2 is boundary
     for (let level = 0; level < 10; level++) {
-        // if greenscore is below boundary, then that is the level to be assigned.
+        // If greenscore is below boundary, then that is the level to be assigned.
         let boundary = Math.pow(level / 0.3, 2);
         if (score < boundary) {
             remaining = boundary - score;
@@ -66,39 +58,30 @@ function calculateLevel(score) {
     }
 }
 
-// Simply refreshes the home page for account number 1. This will soon be split off
-// into separate functions because it's super ugly now.
-function refreshDetails() {
-    //let userObject = parseAccountDetails();
-    //console.log(userObject); // NOT WORKING.... I will finish this.
+// calculateCompanyGreenLevel: calculates the numeric RAG rating to 2 decimals
+// Ensure total is the sum of the carbon emission, sustainability and waste practices score
+function calculateCompanyGreenLevel(score) {
+    divided = score / 30;
+    return Math.round((divided + Number.EPSILON) * 100) / 100; // Rounds to 2 decimals
+}
 
-    const apiUrl = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com/api?accountNumber=1";
+// Refreshes the home page for current account details, and sets appropriate text.
+// It's a bit slow... Should look at this again soon to understand why.
+async function refreshHomePage() {
+    const object = await parseJSONObject('Account')
 
-    fetch(apiUrl, {
-        method: 'GET',
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            let name = data[0].name;
-            let number = data[0].accountNumber;
-            let balance = data[0].amountOfMoney;
-            let greenScore = data[0].currentGreenScore;
+    targetName[0].innerText = object.name; // Change name within the document
+    targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
+    targetBalance[0].innerText = "£" + object.amountOfMoney; // Change balance within the document
 
-            targetName[0].innerText = name; // Change name within the document
-            targetNumber[0].innerText = "Account number: " + number; // Change account number within the document
-            targetBalance[0].innerText = "£" + balance; // Change balance within the document
+    // Calculate current level and points remaining until next level
+    let values = calculateLevel(object.currentGreenScore);
 
-            // Calculate current level and points remaining until next level
-            let values = calculateLevel(greenScore);
+    // Change all the level elements
+    for (var i = 0; i < targetLevels.length; i++) {
+        targetLevels[i].innerText = "Level " + values[0];
+    }
 
-            // Change all the level elements
-            for (var i = 0; i < targetLevels.length; i++) {
-                targetLevels[i].innerText = "Level " + values[0];
-            }
-            document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
-            targetPointsRemaining[0].innerText = Math.round(values[1]);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
+    targetPointsRemaining[0].innerText = Math.round(values[1]);
 }
