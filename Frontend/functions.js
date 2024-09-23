@@ -2,11 +2,17 @@ const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
 window.onload = refreshHomePage; // Refresh home page as soon as page loads.
 
+var loginPageInput = document.getElementById("loginAccountNumberInput");
+var loginPageButton = document.getElementById("loginButton");
 var targetName = document.getElementsByClassName("accountName");
 var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
+
+loginPageButton.addEventListener('click',function(){
+    window.location.href("home.html");
+});
 
 async function parseJSONObject(type) {
     // Call API, get requested content and change into JSON object
