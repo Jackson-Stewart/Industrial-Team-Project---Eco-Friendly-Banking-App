@@ -14,7 +14,7 @@ async function parseJSONObject(type) {
     switch (type) {
         case "Account":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api?accountNumber=1";
+                const apiUrl = url + "/api?accountNumber=" + localStorage["accountNumber"];
 
                 setTimeout(() => {
                     fetch(apiUrl, {
