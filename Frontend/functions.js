@@ -7,6 +7,12 @@ var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
+var getExtension = "";
+if (localStorage.getItem("accountNumber") != "undefined") {
+    getExtension = "?accountNumber=" + localStorage.getItem("accountNumber");
+} else {
+    getExtension = "?name=" + localStorage.getItem("name");
+}
 
 async function parseJSONObject(type) {
     // Call API, get requested content and change into JSON object
@@ -14,19 +20,16 @@ async function parseJSONObject(type) {
     switch (type) {
         case "Account":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api?accountNumber=" + localStorage["accountNumber"];
-
-                setTimeout(() => {
-                    fetch(apiUrl, {
-                        cache: 'no-cache',
-                        method: 'GET',
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            userObject = data[0];
-                            resolve(userObject);
-                        })
+                const apiUrl = url + "/api" + getExtension;
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    method: 'GET',
                 })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        userObject = data[0];
+                        resolve(userObject);
+                    })
             })
             break;
         case "Company":
@@ -66,14 +69,14 @@ function calculateCompanyGreenLevel(score) {
 
 // Hides main content while API fetch completes, instead showing a loader
 function hideMainHomePage() {
-    document.getElementsByClassName("full")[0].style.visibility='hidden';
-    document.getElementsByClassName("loader")[0].style.visibility='visible';
+    document.getElementsByClassName("full")[0].style.visibility = 'hidden';
+    document.getElementsByClassName("loader")[0].style.visibility = 'visible';
 }
 
 // Shows main content (intended after fetch completes), and hides loader
 function showMainHomePage() {
-    document.getElementsByClassName("full")[0].style.visibility='visible';
-    document.getElementsByClassName("loader")[0].style.visibility='hidden';
+    document.getElementsByClassName("full")[0].style.visibility = 'visible';
+    document.getElementsByClassName("loader")[0].style.visibility = 'hidden';
 }
 
 // Refreshes the home page for current account details, and sets appropriate text.
@@ -81,7 +84,7 @@ function showMainHomePage() {
 // Show loading page for 2 seconds before displaying actual page.
 async function refreshHomePage() {
     hideMainHomePage();
-    setTimeout(() => {showMainHomePage()}, 1500);
+    setTimeout(() => { showMainHomePage() }, 1500);
     const object = await parseJSONObject('Account')
 
     targetName[0].innerText = object.name; // Change name within the document
