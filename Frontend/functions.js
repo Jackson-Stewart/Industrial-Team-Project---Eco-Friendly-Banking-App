@@ -56,6 +56,10 @@ function calculateLevel(score) {
             remaining = boundary - score;
             return [level, remaining];
         }
+        else if (level == 9)
+        {
+            return [10, 0];
+        }
         else continue;
     }
 }
@@ -89,16 +93,24 @@ async function refreshHomePage() {
 
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
-    targetBalance[0].innerText = "£" + object.amountOfMoney; // Change balance within the document
+    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
 
     // Calculate current level and points remaining until next level
     let values = calculateLevel(object.currentGreenScore);
-
+    targetLevels[0].innerText = "Level " + values[0];
     // Change all the level elements
     for (var i = 0; i < targetLevels.length; i++) {
         targetLevels[i].innerText = "Level " + values[0];
     }
 
-    document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
-    targetPointsRemaining[0].innerText = Math.round(values[1]);
+    if (values[0] == 10) {
+        document.getElementsByClassName("nextLevel")[0].innerText = "";
+        document.getElementsByClassName("fullLevelText")[0].innerText = "Max Level Reached!";
+    }
+    else
+    {
+        document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
+        targetPointsRemaining[0].innerText = Math.round(values[1]);
+    }
+    
 }
