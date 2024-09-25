@@ -67,10 +67,11 @@ async function parseJSONObject(type) {
                             date.classList.add("text-xs");
                             money.classList.add("ml-auto", "font-medium", "text-base")
 
+                            console.log(data[index]);
                             accountNameTo.innerHTML = data[index].accountNameTo[0];
                             accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                            date.innerHTML = (data[index].timeStamp.$date.substring(0, 10))
-                            money.innerHTML = "-£" + data[index].moneyTransferred;
+                            date.innerHTML = (data[index].timeStamp.$date.substring(0, 10));
+                            money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
 
                             append(div, accountNameTo);
                             append(div, accountNumberTo);
@@ -128,5 +129,5 @@ async function refreshTransactionPage() {
     const transactionObject = await parseJSONObject('Transaction');
 
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
-    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
+    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document
 }
