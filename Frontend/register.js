@@ -11,7 +11,7 @@ localStorage.setItem("name", "undefined");
 
 // Set text, send POST request, then set new user's accountNumber to localstorage, then redirect
 registerButton.onclick = async function () {
-    text[0].innerText = "Registering " + input.value;
+    text[0].innerText = "Registering " + input.value + "...";
     const object = await createNewAccount(input.value)
     localStorage.setItem("name", object.name);
     console.log(object.name);
