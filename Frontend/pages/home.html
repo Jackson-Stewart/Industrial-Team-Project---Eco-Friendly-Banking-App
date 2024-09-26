@@ -73,10 +73,6 @@
             animation-delay: 0.5s;
             background-color: #F0F8FF;
         }
-        footer{
-            position:fixed;
-            bottom: 0;
-        }
     </style>
 </head>
 
@@ -153,8 +149,16 @@
             <path d="m140-220-60-60 300-300 160 160 284-320 56 56-340 384-160-160-240 240Z" />
         </svg>View Level History</button>
         </div>
+
+        <div class="mt-8 mx-8 bg-white shadow-lg pt-3 rounded-lg">
+            <div class="">
+                <h2 class="font-medium text-center text-sm">Use your green score to redeem rewards!</h2>
+                <a href="rewards.html" class="btn btn-primary rounded-bl-lg rounded-br-lg flex justify-center items-center gap-x-0.5 mt-2"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>View Rewards & Leaderboard</a>
+            </div>
+        </div>
     </div>
-    <footer class="w-full bg-primary text-white py-4 fixed bottom-0">
+
+    <footer class="w-full bg-primary text-white py-4 mt-8">
     <div class="container mx-auto flex justify-center">   
         <button onclick="confirmLogout(event)" class="btn bg-red-600 hover:bg-red-800 !py-1.5 w-32 h-8 flex items-center justify-center mt-1"> 
             <span class="material-symbols-outlined">logout</span>
