@@ -20,6 +20,9 @@ registerButton.addEventListener('click', function () {
 });
 
 async function checkAccountExists() {
+    if (loginPageInput.value === "") {
+        return signingInText[0].innerText = "Please enter an account number.";
+    }
     signingInText[0].innerText = "Attempting sign in...";
     let signInPromise = new Promise((resolve, reject) => {
         const apiUrl = url + "/api?accountNumber=" + loginPageInput.value;

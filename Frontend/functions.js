@@ -54,8 +54,20 @@ async function parseJSONObject(type) {
                             var date = document.createElement("p");
                             var money = document.createElement("p");
                             var transactionContainer = document.createElement("div");
-                            // The colour here "bg-green-200" needs to be switched out depending on
-                            // RAG rating, so it has a different background colour for each.
+
+                            if (data[index].calculatedGreenScore < 0.3) // Red
+                            {
+                                transactionContainer.classList.add("transaction", "bg-red-200");
+                            }
+                            else if (data[index].calculatedGreenScore < 0.7)
+                            {
+                                transactionContainer.classList.add("transaction", "bg-orange-200");
+                            }
+                            else
+                            {
+                                transactionContainer.classList.add("transaction", "bg-green-200");
+                            }
+
                             transactionContainer.classList.add("transaction", "bg-green-200");
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
