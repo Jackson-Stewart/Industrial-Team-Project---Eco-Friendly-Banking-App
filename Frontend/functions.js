@@ -74,7 +74,8 @@ async function parseJSONObject(type) {
                             date.classList.add("text-xs");
                             money.classList.add("ml-auto", "font-medium", "text-base")
 
-                            accountNameTo.innerHTML = data[index].accountNameTo;
+                            console.log(data[index]);
+                            accountNameTo.innerHTML = data[index].recipientName;
                             accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
                             date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
                             money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
