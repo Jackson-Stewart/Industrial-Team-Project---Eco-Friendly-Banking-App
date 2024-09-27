@@ -1,6 +1,6 @@
 const apilink = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-alert("data is: " + data[0]);
+
 
 //const userInfo = await fetchApiFunction();
 
@@ -17,7 +17,7 @@ try {
     }
 
     const data = await response.json();
-
+    alert("data is: " + data[0]);
 }
 
 catch (error) {
