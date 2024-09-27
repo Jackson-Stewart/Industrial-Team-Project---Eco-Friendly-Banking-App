@@ -8,7 +8,8 @@ var targetBalance = document.getElementsByClassName("balance");
 
 var extension = "" //initially used for call for account on load, used after for POST 
 if (localStorage.getItem("accountNumber") != "undefined") {
-    extension = "?accountNumber=" + localStorage.getItem("accountNumber");
+    //extension = "?accountNumber=" + localStorage.getItem("accountNumber");
+    extension = "?accountNumber=2";
 } else {
     extension = "?name=" + localStorage.getItem("name");
 }
@@ -24,16 +25,21 @@ async function parseJSONObject(type, callType) {
         })
             .then((response) => response.json())
             .then((data) => {
-                if(data) {
-                    userObject = data[0];
-                    resolve(userObject);
+                if(type ==="POST") {
+
+                    userObject = data;
                 }
+                else {
+                    userObject = data[0];
+                }
+                resolve(userObject);
             })
     })
 }
 
 var button = document.getElementById("sendButton");
 button.onclick = async function sendMoneyClick() {
+    hideMainHomePage();
 
     var recipientInput = document.getElementById("recipient");
     var amountInput = document.getElementById("amount");
@@ -48,15 +54,18 @@ button.onclick = async function sendMoneyClick() {
         greenscore = greenscoreObject.rag;
     }
 
-    extension = "/"+localStorage.getItem("accountNumber") +"/"
+    extension = "/"+"2" +"/"
                 + recipientInput.value +"/"
                 + amountInput.value +"/"
                 + greenscore +"/"
                 + referenceInput.value;
     const object = await parseJSONObject("POST", "transactions");
-    if(object != null) {
-        launchDialog(object);
+    showMainHomePage();
+    if(object !== null) {
+        launchDialog(object.message, "wrongRecipient");
+        return;
     }
+    launchDialog("", "sentMoneySuccessful");
 }
 
 async function refreshPage() {
@@ -69,16 +78,19 @@ async function refreshPage() {
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
 }
 
-
-function tryAgain() {
+var tryAgainButton = document.getElementById("tryAgainButton");
+tryAgainButton.onclick = function tryAgain() {
     const wrongRecipient = document.getElementById('wrongRecipient');
     wrongRecipient.close();
-}
+};
 
-function launchDialog(message) {
-    const d = document.getElementById('wrongRecipient');
-    const text = document.getElementById('popupErorrMessage');
-    wrongRecipient.showModal();
+function launchDialog(message, popupId) {
+    const d = document.getElementById(popupId);
+    if(popupId == "wrongRecipient") {
+        const text = document.getElementById('popupErrorMessage');
+        text.innerText = message;
+    }
+    d.showModal();
 }
 
 // Hides main content while API fetch completes, instead showing a loader

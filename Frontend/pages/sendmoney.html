@@ -112,7 +112,7 @@
     <!-- Popup for when the transaction hasn't been successful (the recipient wasn't found) -->
                 <dialog id="wrongRecipient">
                     <div class="bg-[#EBEBEB] text-center py-1 rounded-tl-lg rounded-tr-lg">
-                        <h4 id="popupErrorMessage" class="font-semibold text-lg">&nbsp;&nbsp;Something was wrong&nbsp;&nbsp;</h4>
+                        <h4 class="font-semibold text-lg"><span id="popupErrorMessage">...</span></h4>
                     </div>
                     <br>
                     <svg class="mx-auto" xmlns="http://www.w3.org/2000/svg" 
@@ -121,7 +121,7 @@
                     </svg>
                     <br>
                     <!-- This button will dissapear the popup -->
-                    <button onclick="tryAgain()" href="" 
+                    <button id="tryAgainButton" 
                     class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                     width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="bevel"> 
