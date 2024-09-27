@@ -7,6 +7,7 @@ var targetNumber = document.getElementsByClassName('accountNumber');
 var targetGreenScore = document.getElementsByClassName('greenScore');
 var targetLevel = document.getElementsByClassName('currentLevel');
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
+var targetLeaderboard = document.getElementById('leaderboardData');
 
 var getExtension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
@@ -22,6 +23,7 @@ function append(parent, el) {
 async function parseJSONObject(type) {
     // Call API, get requested content and change into JSON object
     let userObject = '';
+    let allUsers = [];
 
     switch(type){
         case "Account":
@@ -31,12 +33,55 @@ async function parseJSONObject(type) {
                     cache: 'no-cache',
                     method: 'GET',
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        userObject = data[0];
-                        resolve(userObject);
-                    })
+                .then((response) => response.json())
+                .then((data) => {
+                    userObject = data[0];
+                    resolve(userObject);
+                })
+
+                const apiUrl2 = url + "/api/accounts";
+                fetch(apiUrl2, {
+                    cache: 'no-cache',
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    allUsers = data.filter(company => !('carbonEmissionRating' in company)).sort((a, b) => b.currentGreenScore - a.currentGreenScore);
+                    for (var index in allUsers){
+                        var div = document.createElement('div');
+                        var circle = document.createElement('div');
+                        var name = document.createElement('h4');
+                        var points = document.createElement('p');
+
+                        div.classList.add('leaderboard-name');
+                        circle.classList.add('circle');
+                        name.classList.add('font-medium', 'text-sm');
+                        points.classList.add('text-sm', 'ml-auto', 'mr-2');
+
+                        circle.innerHTML = Number(index) + 1;
+                        name.innerHTML = allUsers[index].name;
+                        points.innerHTML = allUsers[index].currentGreenScore;
+                        
+                        if (index == 0){
+                            circle.classList.add('bg-[#FFD700]');
+                        } else if (index == 1){
+                            circle.classList.add('bg-[#C0C0C0]');
+                        } else if (index == 2){
+                            circle.classList.add('bg-[#CE8946]');
+                        } else {
+                            circle.classList.add('bg-primary');
+                        }
+
+                        append(div, circle);
+                        append(div, name);
+                        append(div, points);
+                        append(targetLeaderboard, div);
+                    }
+                    resolve(allUsers);
+                })
+                    
             })
+
             break;
         case "Reward":
             return new Promise((resolve, reject) => {
