@@ -1,18 +1,24 @@
 const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-window.onload = refreshHomePage; // Refresh home page as soon as page loads.
+window.onload = refreshTransactionPage; // Refresh home page as soon as page loads.
 
-var targetName = document.getElementsByClassName("accountName");
 var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
-var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
-var targetLevels = document.getElementsByClassName("currentLevel");
-var extension = "";
+var targetAllTransactions = document.getElementById("allTransactions");
+var targetTodaysTransactions = document.getElementById("todaysTransactions");
+var getExtension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
-    extension = "?accountNumber=" + localStorage.getItem("accountNumber");
+    getExtension = "?accountNumber=" + localStorage.getItem("accountNumber");
 } else {
-    extension = "?name=" + localStorage.getItem("name");
+    getExtension = "?name=" + localStorage.getItem("name");
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const backToHomeBtn = document.getElementById('backToHomeBtn');
+    backToHomeBtn.addEventListener('click', function() {
+        window.location.href = 'home.html';
+    });
+});
 
 function append(parent, el) {
     return parent.appendChild(el);
@@ -24,7 +30,7 @@ async function parseJSONObject(type) {
     switch (type) {
         case "Account":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api" + extension;
+                const apiUrl = url + "/api" + getExtension;
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
@@ -53,7 +59,7 @@ async function parseJSONObject(type) {
                             var date = document.createElement("p");
                             var money = document.createElement("p");
                             var transactionContainer = document.createElement("div");
-
+                            
                             if (data[index].calculatedGreenScore < 0.3) // Red
                             {
                                 transactionContainer.classList.add("transaction", "bg-red-200");
@@ -62,21 +68,20 @@ async function parseJSONObject(type) {
                             {
                                 transactionContainer.classList.add("transaction", "bg-orange-200");
                             }
-                            else
+                            else if (data[index].calculatedGreenScore <= 1)
                             {
                                 transactionContainer.classList.add("transaction", "bg-green-200");
                             }
 
-                            transactionContainer.classList.add("transaction", "bg-green-200");
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
                             date.classList.add("text-xs");
                             money.classList.add("ml-auto", "font-medium", "text-base")
 
-                            console.log(data[index]);
+                            console.log(data[index].calculatedGreenScore);
                             accountNameTo.innerHTML = data[index].recipientName;
                             accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                            date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
+                            date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
                             money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
 
                             append(div, accountNameTo);
@@ -84,7 +89,16 @@ async function parseJSONObject(type) {
                             append(div, date);
                             append(transactionContainer, div);
                             append(transactionContainer, money);
-                            append(targetTransactions, transactionContainer);
+                            append(targetAllTransactions, transactionContainer);
+
+                            // If transaction was made today, append also to today's lists
+                            if (date.innerHTML === today)
+                            {
+                                let copy = document.createElement("div");
+                                copy.classList.add("transaction", "bg-green-200");
+                                copy.innerHTML = transactionContainer.innerHTML;
+                                append(targetTodaysTransactions, copy);
+                            }   
 
                             if (index === 7)
                             {
@@ -100,27 +114,6 @@ async function parseJSONObject(type) {
     }
 }
 
-// calculateLevel: calculates user's level, given the current numeric score
-function calculateLevel(score) {
-    // STREAK IGNORED, SHOULD BE FACTORED INTO CALCULATION SOON
-
-    let remaining = 0;
-    // (Level/0.3)^2 is boundary
-    for (let level = 0; level < 10; level++) {
-        // If greenscore is below boundary, then that is the level to be assigned.
-        let boundary = Math.pow(level / 0.3, 2);
-        if (score < boundary) {
-            remaining = boundary - score;
-            return [level, remaining];
-        }
-        else if (level == 9)
-        {
-            return [10, 0];
-        }
-        else continue;
-    }
-}
-
 // calculateCompanyGreenLevel: calculates the numeric RAG rating to 2 decimals
 // Ensure total is the sum of the carbon emission, sustainability and waste practices score
 function calculateCompanyGreenLevel(score) {
@@ -129,45 +122,23 @@ function calculateCompanyGreenLevel(score) {
 }
 
 // Hides main content while API fetch completes, instead showing a loader
-function hideMainHomePage() {
+function hideMainPage() {
     document.getElementsByClassName("full")[0].style.visibility = 'hidden';
     document.getElementsByClassName("loader")[0].style.visibility = 'visible';
 }
 
 // Shows main content (intended after fetch completes), and hides loader
-function showMainHomePage() {
+function showMainPage() {
     document.getElementsByClassName("full")[0].style.visibility = 'visible';
     document.getElementsByClassName("loader")[0].style.visibility = 'hidden';
 }
 
-// Refreshes the home page for current account details, and sets appropriate text.
-// It's a bit slow... Should look at this again soon to understand why.
-// Show loading page for 2 seconds before displaying actual page.
-async function refreshHomePage() {
-    hideMainHomePage();
-    setTimeout(() => { showMainHomePage() }, 2300);
+async function refreshTransactionPage() {
+    hideMainPage();
+    setTimeout(() => { showMainPage() }, 3500);
     const object = await parseJSONObject('Account')
-    const transactions = await parseJSONObject('Transaction')
+    const transactionObject = await parseJSONObject('Transaction');
 
-    targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
-    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
-
-    // Calculate current level and points remaining until next level
-    let values = calculateLevel(object.currentGreenScore);
-    targetLevels[0].innerText = "Level " + values[0];
-    // Change all the level elements
-    for (var i = 0; i < targetLevels.length; i++) {
-        targetLevels[i].innerText = "Level " + values[0];
-    }
-
-    if (values[0] == 10) {
-        document.getElementsByClassName("nextLevel")[0].innerText = "";
-        document.getElementsByClassName("fullLevelText")[0].innerText = "Max Level Reached!";
-    }
-    else
-    {
-        document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
-        targetPointsRemaining[0].innerText = Math.round(values[1]);
-    }
+    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document
 }

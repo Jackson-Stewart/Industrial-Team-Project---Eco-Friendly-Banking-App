@@ -1,0 +1,274 @@
+<html></html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title></title>
+    <style>
+        .loader {
+            text-align: center;
+        }
+
+        .gfg {
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: calc(50% - 1em);
+            border-radius: 1em;
+            transform-origin: 1em 2em;
+            animation: rotate;
+            animation-iteration-count: infinite;
+            animation-duration: 1.8s;
+        }
+
+        /* Rotation of loader dots */
+        @keyframes rotate {
+            from {
+                transform: rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        .g1 {
+            animation-delay: 0.1s;
+            background-color: #13274F;
+
+        }
+
+        .g2 {
+            animation-delay: 0.2s;
+            background-color: #0066b2;
+        }
+
+        .g3 {
+            animation-delay: 0.3s;
+            background-color: #6CB4EE;
+        }
+
+        .g4 {
+            animation-delay: 0.4s;
+            background-color: #89CFF0;
+        }
+
+        .g5 {
+            animation-delay: 0.5s;
+            background-color: #F0F8FF;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class='loader'>
+        <div class='gfg g1'></div>
+        <div class='gfg g2'></div>
+        <div class='gfg g3'></div>
+        <div class='gfg g4'></div>
+        <div class='gfg g5'></div>
+    </div>
+
+    <div class="full">
+        <div class="bg-primary text-white py-8 border-b border-black">
+            <div class="container grid grid-cols-2 items-center">
+                <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
+                    Rewards
+                </h2>
+                <div class="">
+                    <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
+                        <p class="text-xs text-black accountNumber">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="flex items-center gap-x-16">
+                <a href="home.html" class="text-primary flex items-center"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>Back</a>
+                <div class="ml-auto w-full">
+                    <div class="flex items-center w-full">
+                        <h4 class="font-semibold currentLevel text-sm shrink-0">Level ...</h4>   
+                        <p class="text-[10px] ml-auto"><span class="fullLevelText"><span class="font-medium pointsRemainingToNextLevel">...</span> points until <span class="nextLevel">Level ...</span></span></p>
+                    </div>
+
+                    <div class="bg-[#F5F5F5] w-24 h-4 rounded-md border border-black w-full">
+                        <div class="bg-green-400 w-1/2 h-full rounded-tl-md rounded-bl-md"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-b border-primary mt-4 text-center bg-white py-8">
+            <h3 class="text-5xl font-bold text-primary greenScore">...</h3>
+            <p class="text-xs">points earned</p>
+        </div>
+
+        <div class="flex items-center mt-8">
+            <div id="tab_0" class="tab active" onclick="changeView(0)">Rewards</div>
+            <div id="tab_1" class="tab" onclick="changeView(1)">Leaderboard</div>
+        </div>
+
+        <div id="leaderboard" class="container mt-8 hidden">
+            <h2 class="text-lg font-semibold mb-4 text-center">Leaderboard for September</h2>
+            
+            <div class="leaderboard-name">
+                <div class="bg-[#FFD700] circle">1</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">412</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-[#C0C0C0] circle">2</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">405</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-[#CE8946] circle">3</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">394</p>
+            </div>
+            
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">4</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">378</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">5</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">355</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">6</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">324</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">7</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">309</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">8</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">302</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">9</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">298</p>
+            </div>
+
+            <div class="leaderboard-name">
+                <div class="bg-primary circle">10</div>
+                <h4 class="font-medium text-sm">John Smith</h4>
+                <p class="text-sm ml-auto mr-2">295</p>
+            </div>
+        </div>
+
+        <div id="rewards" class="mt-8">
+            <h2 class="container text-lg font-semibold">Reward Categories</h2>
+
+            <div class="border-t border-b border-primary py-2 w-full mt-2">
+                <div class="container flex gap-x-4 overflow-x-scroll">
+                    <div class="btn btn-primary w-max rounded">All</div>
+                    <div class="btn bg-orange-400 text-white w-max rounded flex items-center gap-x-0.5"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed" class="w-5 h-5"><path d="M240-80q-33 0-56.5-23.5T160-160v-480q0-33 23.5-56.5T240-720h80q0-66 47-113t113-47q66 0 113 47t47 113h80q33 0 56.5 23.5T800-640v480q0 33-23.5 56.5T720-80H240Zm0-80h480v-480h-80v80q0 17-11.5 28.5T600-520q-17 0-28.5-11.5T560-560v-80H400v80q0 17-11.5 28.5T360-520q-17 0-28.5-11.5T320-560v-80h-80v480Zm160-560h160q0-33-23.5-56.5T480-800q-33 0-56.5 23.5T400-720ZM240-160v-480 480Z"/></svg>Shopping</div>
+                    <div class="btn bg-red-800 text-white w-max rounded flex items-center gap-x-0.5"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m380-340 280-180-280-180v360Zm-60 220v-80H160q-33 0-56.5-23.5T80-280v-480q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v480q0 33-23.5 56.5T800-200H640v80H320ZM160-280h640v-480H160v480Zm0 0v-480 480Z"/></svg>Media</div>
+                    <div class="btn bg-blue-800 text-white w-max rounded flex items-center gap-x-0.5"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M760-660q17 0 28.5-11.5T800-700q0-17-11.5-28.5T760-740q-17 0-28.5 11.5T720-700q0 17 11.5 28.5T760-660Zm-160 0q17 0 28.5-11.5T640-700q0-17-11.5-28.5T600-740q-17 0-28.5 11.5T560-700q0 17 11.5 28.5T600-660Zm-20 136h200q0-35-30.5-55.5T680-600q-39 0-69.5 20.5T580-524ZM280-80q-100 0-170-70T40-320v-280h480v280q0 100-70 170T280-80Zm0-80q66 0 113-47t47-113v-200H120v200q0 66 47 113t113 47Zm400-200q-26 0-51.5-5.5T580-382v-94q22 17 47.5 26.5T680-440q66 0 113-47t47-113v-200H520v140h-80v-220h480v280q0 100-70 170t-170 70Zm-480-20q17 0 28.5-11.5T240-420q0-17-11.5-28.5T200-460q-17 0-28.5 11.5T160-420q0 17 11.5 28.5T200-380Zm160 0q17 0 28.5-11.5T400-420q0-17-11.5-28.5T360-460q-17 0-28.5 11.5T320-420q0 17 11.5 28.5T360-380Zm-80 136q39 0 69.5-20.5T380-320H180q0 35 30.5 55.5T280-244Zm0-96Zm400-280Z"/></svg>Entertainment</div>
+                    <div class="btn bg-purple-600 text-white w-max rounded flex items-center gap-x-0.5"><svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M280-80v-366q-51-14-85.5-56T160-600v-280h80v280h40v-280h80v280h40v-280h80v280q0 56-34.5 98T360-446v366h-80Zm400 0v-320H560v-280q0-83 58.5-141.5T760-880v800h-80Z"/></svg>Restaurants</div>
+                </div>
+            </div>
+
+            <div class="container mt-8">
+                <div id="allRewards"></div>
+            </div>
+        </div>
+        
+        <div id="dialog" class="w-full py-4 fixed bg-white border-gray-400 top-1/3 z-20 hidden">
+            <svg onclick="hideDialog()" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" class="absolute right-2 top-2 text-gray-600"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+            <div class="flex items-center border-b border-primary px-4 pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
+                <div class="px-2">
+                    <h4 id="rewardNameBox" class="text-primary font-semibold">Reward Name</h4>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p class="text-sm">This reward costs <span id="rewardPointsBox" class="font-semibold">50</span> points</p>
+                <button class="btn btn-primary rounded-lg mt-4">Redeem</button>
+            </div>
+        </div>
+
+<!--     <script type="module" src="../functions.js"></script> -->
+     <script>
+        //press the button and shows the dialog
+        function showDialog(rewardName, points)
+        {
+            const dialog = document.getElementById('dialog');
+            const page_mask = document.getElementById('page_mask');
+            dialog.classList.remove('hidden');
+            page_mask.classList.remove('hidden');
+
+            const rewardNameBox = document.getElementById('rewardNameBox');
+            const rewardPointsBox = document.getElementById('rewardPointsBox');
+
+            rewardNameBox.innerHTML = rewardName;
+            rewardPointsBox.innerHTML = points;
+        }
+
+        function hideDialog(){
+            const dialog = document.getElementById('dialog');
+            const page_mask = document.getElementById('page_mask');
+            dialog.classList.add('hidden');
+            page_mask.classList.add('hidden');
+        }
+
+        function changeView(i){
+            const tab_0 = document.getElementById('tab_0');
+            const tab_1 = document.getElementById('tab_1');
+            const rewards = document.getElementById('rewards');
+            const leaderboard = document.getElementById('leaderboard');
+
+            if (tab_0.classList.contains('active')){
+                tab_0.classList.remove('active');
+            } 
+            if (tab_1.classList.contains('active')){
+                tab_1.classList.remove('active');
+            } 
+  
+
+            if (i == 0){
+                tab_0.classList.add('active');
+                rewards.classList.remove('hidden');
+                leaderboard.classList.add('hidden');
+            } else if (i == 1){
+                tab_1.classList.add('active');
+                leaderboard.classList.remove('hidden');
+                rewards.classList.add('hidden');
+            }
+        }
+     </script>
+
+    <script type="module" src="../rewards.js"></script>
+</body>
+
+<footer>
+    <div id="page_mask" class="fixed top-0 left-0 right-0 bottom-0 z-10 hidden" style="background: rgba(0,0,0,0.5);"></div>
+</footer>
+
+</html>

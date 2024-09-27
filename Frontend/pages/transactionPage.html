@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .containerForTransactionList {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .sectionforTransactions {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e1e5e7;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .t {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .loader {
+            text-align: center;
+        }
+
+        .gfg {
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: calc(50% - 1em);
+            border-radius: 1em;
+            transform-origin: 1em 2em;
+            animation: rotate;
+            animation-iteration-count: infinite;
+            animation-duration: 1.8s;
+        }
+
+        /* Rotation of loader dots */
+        @keyframes rotate {
+            from {
+                transform: rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        .g1 {
+            animation-delay: 0.1s;
+            background-color: #13274F;
+
+        }
+
+        .g2 {
+            animation-delay: 0.2s;
+            background-color: #0066b2;
+        }
+
+        .g3 {
+            animation-delay: 0.3s;
+            background-color: #6CB4EE;
+        }
+
+        .g4 {
+            animation-delay: 0.4s;
+            background-color: #89CFF0;
+        }
+
+        .g5 {
+            animation-delay: 0.5s;
+            background-color: #F0F8FF;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='loader'>
+        <div class='gfg g1'></div>
+        <div class='gfg g2'></div>
+        <div class='gfg g3'></div>
+        <div class='gfg g4'></div>
+        <div class='gfg g5'></div>
+    </div>
+
+    <div class="full">
+        <div class="bg-primary text-white pt-12 pb-24 border-b border-black">
+            <div class="containerForTransactionList">
+                <div class="grid grid-cols-2 items-center">
+                    <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><span class="material-symbols-outlined">history</span>History
+                    </h2>
+                    <div class="">
+                        <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
+                            <p class="text-xs text-black accountNumber">...</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-lg mt-4">View Your Transaction History</p>
+            </div>
+        </div>
+
+
+        <div class="containerForTransactionList ">
+            <div class="-mt-20 shadow-lg rounded-lg">
+                <div class="py-4 bg-white rounded-lg">
+                    <div class="mx-4 flex items-center">
+                        <h4 class="font-semibold text-lg">Your Balance</h4>
+                        <h4 class="ml-auto font-semibold text-2xl balance">£...</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 ">
+                <h2 class="font-semibold text-lg mb-2">Today</h2>
+                <div class="sectionforTransactions" id="todaysTransactions"></div>
+            </div>
+
+            <div class="mt-8">
+                <h2 class="font-semibold text-lg mb-2">Latest Transactions</h2>
+                <div class="sectionforTransactions" id="allTransactions"></div>
+            </div>
+
+            <button id="backToHomeBtn"
+                class="btn bg-primary text-white rounded-md !py-1.5 w-full flex gap-x-1.5 items-center justify-center mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="currentColor">
+                    <path d="m140-220-60-60 300-300 160 160 284-320 56 56-340 384-160-160-240 240Z" />
+                </svg>
+                Back To Home
+            </button>
+        </div>
+    </div>
+    </div>
+    <script type="module" src="../transactions.js"></script>
+
+</body>
+
+</html>

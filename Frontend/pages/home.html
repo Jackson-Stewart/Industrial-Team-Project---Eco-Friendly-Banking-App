@@ -8,7 +8,16 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="../style.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--This is for event let user to confirm to log out-->
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault();
+            if (confirm("Are you sure you want to log out?")) {
+                window.location.href = "login.html";
+            }
+        }
+    </script>
     <title></title>
     <style>
         .loader {
@@ -95,13 +104,13 @@
         </div>
 
         <div class="mx-8 -mt-20 shadow-lg rounded-bl-lg rounded-br-lg">
-            <button href=""
+            <a href="sendmoney.html"
                 class="btn btn-dark rounded-tl-lg rounded-tr-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#e8eaed">
                 <path
                     d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z" />
             </svg>Send
-                Money</button>
+                Money</a>
 
             <div class="py-4 bg-white rounded-bl-lg rounded-br-lg">
                 <div class="mx-4 flex items-center">
@@ -114,29 +123,9 @@
         <div class="mt-8 bg-white border-t border-b border-primary px-8 py-6">
             <div class="flex items-center">
                 <h2 class="font-semibold text-lg">Latest Transactions</h2>
-                <a href="" class="text-primary font-medium ml-auto btn btn-primary rounded-lg">See All</a>
+                <a href="transactionPage.html" class="text-primary font-medium ml-auto btn btn-primary rounded-lg">See All</a>
             </div>
-            <div class="transaction bg-green-200">
-                <div>
-                    <p class="font-medium">GreenWaste Management</p>
-                    <p class="text-xs">000000014</p>
-                </div>
-                <p class="ml-auto font-medium text-base">-£45.76</p>
-            </div>
-            <div class="transaction bg-orange-200">
-                <div>
-                    <p class="font-medium">FastMed Healthcare</p>
-                    <p class="text-xs">000000007</p>
-                </div>
-                <p class="ml-auto font-medium text-base">-£17.24</p>
-            </div>
-            <div class="transaction bg-red-200">
-                <div>
-                    <p class="font-medium">RedFuel Services</p>
-                    <p class="text-xs">000000001</p>
-                </div>
-                <p class="ml-auto font-medium text-base">-£29.78</p>
-            </div>
+            <div id="latestTransactions"></div>
         </div>
 
         <div class="mx-8 mt-8 shadow-lg rounded-lg bg-white pt-4">
@@ -160,7 +149,23 @@
             <path d="m140-220-60-60 300-300 160 160 284-320 56 56-340 384-160-160-240 240Z" />
         </svg>View Level History</button>
         </div>
+
+        <div class="mt-8 mx-8 bg-white shadow-lg pt-3 rounded-lg">
+            <div class="">
+                <h2 class="font-medium text-center text-sm">Use your green score to redeem rewards!</h2>
+                <a href="rewards.html" class="btn btn-primary rounded-bl-lg rounded-br-lg flex justify-center items-center gap-x-0.5 mt-2"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>View Rewards & Leaderboard</a>
+            </div>
+        </div>
     </div>
+
+    <footer class="w-full bg-primary text-white py-4 mt-8">
+    <div class="container mx-auto flex justify-center">   
+        <button onclick="confirmLogout(event)" class="btn bg-red-600 hover:bg-red-800 !py-1.5 w-32 h-8 flex items-center justify-center mt-1"> 
+            <span class="material-symbols-outlined">logout</span>
+            Log out
+        </button>
+        </div>
+    </footer>
     <script type="module" src="../functions.js"></script>
 </body>
 

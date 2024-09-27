@@ -27,3 +27,17 @@ body {
 .transaction {
     @apply border border-gray-400 rounded-md px-2 py-1.5 flex mt-4 text-sm items-center;
 }
+
+.tab {
+    @apply border border-primary text-primary bg-white p-2 text-center w-full;
+}
+.tab.active {
+    @apply bg-primary text-white;
+}
+
+.leaderboard-name {
+    @apply flex items-center border border-gray-400 rounded p-2 mt-2;
+}
+.leaderboard-name .circle {
+    @apply rounded-full text-white p-1 w-8 h-8 text-center font-semibold mr-4;
+}
