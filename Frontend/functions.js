@@ -41,13 +41,20 @@ async function parseJSONObject(type) {
         case "Transaction":
             return new Promise((resolve, reject) => {
                 const apiUrl = url + "/api/transactions" + extension;
+                console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        let today = new Date().toISOString().slice(0, 10);
+                        console.log(data[0]);
+                        if (data[0].timestamp === undefined)
+                        {
+                            resolve(data);
+                            return;
+                        }
+
                         for (var index in data) {
                             var div = document.createElement("div");
                             var anchor = document.createElement("a");
