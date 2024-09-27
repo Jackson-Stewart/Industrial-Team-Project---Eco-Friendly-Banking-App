@@ -1,6 +1,6 @@
 const apilink = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-
+alert("data is: " + data[0]);
 
 //const userInfo = await fetchApiFunction();
 
@@ -24,7 +24,7 @@ catch (error) {
     console.error("Fetch error: ", error);
 }
 
-alert("data is: " + data[0]);
+
 
 userName.textContent = data[0].name;
 userAccount.textContent = "Account Number: " + data[0].accountNumber;
