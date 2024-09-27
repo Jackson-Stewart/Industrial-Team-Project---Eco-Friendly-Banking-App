@@ -54,7 +54,7 @@ button.onclick = async function sendMoneyClick() {
         greenscore = greenscoreObject.rag;
     }
 
-    extension = "/"+"2" +"/"
+    extension = "/"+localStorage.getItem("accountNumber")+"/"
                 + recipientInput.value +"/"
                 + amountInput.value +"/"
                 + greenscore +"/"
