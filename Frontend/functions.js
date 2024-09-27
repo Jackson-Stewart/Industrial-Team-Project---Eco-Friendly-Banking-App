@@ -7,12 +7,12 @@ var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
-var targetTransactions = document.getElementsByClassName("latestTransactions");
-var getExtension = "";
+var targetTransactions = document.getElementById("latestTransactions");
+var extension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
-    getExtension = "?accountNumber=" + localStorage.getItem("accountNumber");
+    extension = "?accountNumber=" + localStorage.getItem("accountNumber");
 } else {
-    getExtension = "?name=" + localStorage.getItem("name");
+    extension = "?name=" + localStorage.getItem("name");
 }
 
 function append(parent, el) {
@@ -25,7 +25,7 @@ async function parseJSONObject(type) {
     switch (type) {
         case "Account":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api" + getExtension;
+                const apiUrl = url + "/api" + extension;
                 console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
@@ -40,7 +40,7 @@ async function parseJSONObject(type) {
             break;
         case "Transaction":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api/transactions" + getExtension;
+                const apiUrl = url + "/api/transactions" + extension;
                 console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
@@ -87,6 +87,7 @@ async function parseJSONObject(type) {
                             append(div, date);
                             append(transactionContainer, div);
                             append(transactionContainer, money);
+                            console.log(targetTransactions + " " + transactionContainer);
                             append(targetTransactions, transactionContainer);
 
                             if (index === 7)
