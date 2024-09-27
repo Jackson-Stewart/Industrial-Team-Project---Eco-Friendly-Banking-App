@@ -8,6 +8,7 @@ var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
 var targetTransactions = document.getElementById("latestTransactions");
+var targetLevelBar = document.getElementsByClassName('levelBar');
 var extension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
     extension = "?accountNumber=" + localStorage.getItem("accountNumber");
@@ -109,13 +110,20 @@ function calculateLevel(score) {
     // STREAK IGNORED, SHOULD BE FACTORED INTO CALCULATION SOON
 
     let remaining = 0;
+    var boundary = 0;
     // (Level/0.3)^2 is boundary
     for (let level = 0; level < 10; level++) {
         // If greenscore is below boundary, then that is the level to be assigned.
-        let boundary = Math.pow(level / 0.3, 2);
+
+        var lastBoundary = boundary;
+
+        boundary = Math.pow(level / 0.3, 2);
         if (score < boundary) {
             remaining = boundary - score;
-            return [level, remaining];
+
+            var levelProgress = (score-lastBoundary)/(boundary-lastBoundary) * 100;
+
+            return [level, remaining, levelProgress];
         }
         else if (level == 9)
         {
@@ -160,6 +168,7 @@ async function refreshHomePage() {
     // Calculate current level and points remaining until next level
     let values = calculateLevel(object.currentGreenScore);
     targetLevels[0].innerText = "Level " + values[0];
+    targetLevelBar[0].classList.add('w-['+values[2]+'%]')
     // Change all the level elements
     for (var i = 0; i < targetLevels.length; i++) {
         targetLevels[i].innerText = "Level " + values[0];
