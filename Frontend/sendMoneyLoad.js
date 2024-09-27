@@ -24,8 +24,7 @@ catch (error) {
     console.error("Fetch error: ", error);
 }
 
-console.log("trying this");
-console.log(data[0].name);
+alert("it this ok");
 
 userName.textContent = data[0].name;
 userAccount.textContent = "Account Number: " + data[0].accountNumber;
