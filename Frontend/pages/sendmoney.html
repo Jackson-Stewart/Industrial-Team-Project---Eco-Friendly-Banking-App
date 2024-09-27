@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script type="module" src="../sendMoney.js"></script>
-
-
     <title></title>
     <style>
         .loader {
@@ -147,18 +143,18 @@
                     </div>
                 </div>
             </div>
-            <p class="text-center text-lg mt-4" id="sendMoneyName">...</p>
+            <p class="text-center text-lg mt-4">Welcome back, <span class="font-bold accountName">...</span></p>
         </div>
 
         <div class="mx-8 -mt-16 shadow-lg rounded-bl-lg rounded-br-lg">
             <div class="bg-[#EBEBEB] text-center py-1 rounded-tl-lg rounded-tr-lg">
-                <p class="text-xs accountNumber" id="sendMoneyAccount">...</p>
+                <p class="text-xs accountNumber">...</p>
             </div>
 
             <div class="py-4 bg-white">
                 <div class="mx-4 flex items-center">
                     <h4 class="font-semibold text-lg">Your Balance</h4>
-                    <h4 class="ml-auto font-semibold text-2xl balance" id="sendMoneyBalance">£...</h4>
+                    <h4 class="ml-auto font-semibold text-2xl balance">£...</h4>
                 </div>
             </div>
         </div>
@@ -169,39 +165,38 @@
                 <div class="relative mt-2 rounded-md shadow-sm">
                     <h2 class="font-semibold text-lg">Enter recipient:</h2>
                     <input type="text" id="recipient" name="Recipient" class="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="Recipient">
-                    <p class="h1" id="wrongRecipientMessage">Enter a valid recipient</p>
+                    <p class="h1">Enter a valid recipient</p>
                     <h2 class="font-semibold text-lg">Amount:</h2>
                     <input type="number" id="amount" name="Amount" class="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="Amount">
-                    <p class="h1" id="wrongAmountMessage">Amount not valid</p>
+                    <p class="h1">Amount not valid</p>
                     <h2 class="font-semibold text-lg">Reference:</h2>
                     <input type="text" id="reference" name="Reference" class="shadow appearance-none border border-black-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="Reference">
-                    <p class="h1" id="wrongReferenceMessage">Enter a reference</p>
+                    <p class="h1">Enter a reference</p>
                 </div>
             </form>
 
-            <button href="" class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">Send
+            <button onclick="launchDialog()" href="" class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">Send
                 Money<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                     <path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z"></path>
                 </svg></button>
         </div>    
 
+<!-- <script type="module" src="../functions.js"></script>
+ -->
+        <script>
+            function tryAgain() {
+                const wrongRecipient = document.getElementById('wrongRecipient');
+                wrongRecipient.close();
+            }
 
-<!-- <script>
+            function launchDialog() {
+                const d = document.getElementById('wrongRecipient');
+                wrongRecipient.showModal();
+            }
 
-
-
-var sendMoneyName = document.getElementsById("sendMoneyName");
-sendMoneyName.innerHTML = data[0].name;
-
-var moneyAccount = document.getElementsById("sendMoneyBalance");
-moneyAccount.innerHTML = "-£" + data[0].amountOfMoney;
-
-var sendMoneyAccount = document.getElementsById("sendMoneyAccount");
-sendMoneyAccount.innerHTML = "Account number: " + data[0].accountNumber;
             
 
-        </script> -->
-
+        </script>
 </body>
 
 <footer>
