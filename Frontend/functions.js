@@ -67,7 +67,7 @@ async function parseJSONObject(type) {
                             setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
 
                             anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data[index].transaction_id.$oid);
-                            transactionContainer.classList.add("transaction", "bg-green-200");
+                            // transactionContainer.classList.add("transaction");
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
                             date.classList.add("text-xs");
@@ -86,7 +86,7 @@ async function parseJSONObject(type) {
                             append(anchor, transactionContainer);
                             append(targetTransactions, anchor);
 
-                            if (index === 7)
+                            if (index == 7)
                             {
                                 break; // Do not exceed 7 containers
                             }
@@ -101,6 +101,11 @@ async function parseJSONObject(type) {
 }
 
 function setBackgroundColour(rating, container) {
+    if (rating == 0)
+    {
+        container.classList.add("transaction", "bg-slate-200");
+        return;
+    }
     if (rating < 0.3) // Red
     {
         container.classList.add("transaction", "bg-red-200");

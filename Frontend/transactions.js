@@ -136,6 +136,11 @@ async function refreshTransactionPage() {
 }
 
 function setBackgroundColour(rating, container) {
+    if (rating == 0)
+    {
+        container.classList.add("transaction", "bg-slate-200");
+        return;
+    }
     if (rating < 0.3) // Red
     {
         container.classList.add("transaction", "bg-red-200");
