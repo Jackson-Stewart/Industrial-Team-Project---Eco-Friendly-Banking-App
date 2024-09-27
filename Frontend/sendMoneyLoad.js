@@ -1,6 +1,5 @@
 const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-window.onload = refreshHomePage; 
 
 alert("first");
 //const userInfo = await fetchApiFunction();
