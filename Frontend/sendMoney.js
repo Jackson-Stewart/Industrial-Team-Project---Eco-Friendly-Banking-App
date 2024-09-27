@@ -9,7 +9,7 @@ var targetBalance = document.getElementsByClassName("balance");
 var extension = "" //initially used for call for account on load, used after for POST 
 if (localStorage.getItem("accountNumber") != "undefined") {
     //extension = "?accountNumber=" + localStorage.getItem("accountNumber");
-    extension = "?accountNumber" + localStorage.getItem("accountNumber");
+    extension = "?accountNumber=" + localStorage.getItem("accountNumber");
 } else {
     extension = "?name=" + localStorage.getItem("name");
 }
