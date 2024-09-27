@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-     <script type="module" src="../sendMoneyLoad.js"></script>
-    <title></title>
+    <script type="module" src="../sendMoney.js"></script>
+    <title>Send Money</title>
     <style>
         .loader {
             text-align: center;
@@ -112,8 +112,7 @@
     <!-- Popup for when the transaction hasn't been successful (the recipient wasn't found) -->
                 <dialog id="wrongRecipient">
                     <div class="bg-[#EBEBEB] text-center py-1 rounded-tl-lg rounded-tr-lg">
-                        <h4 class="font-semibold text-lg">&nbsp;Sorry&nbsp;</h4>
-                        <h4 class="font-semibold text-lg">&nbsp;&nbsp;Something was wrong&nbsp;&nbsp;</h4>
+                        <h4 class="font-semibold text-lg"><span id="popupErrorMessage">...</span></h4>
                     </div>
                     <br>
                     <svg class="mx-auto" xmlns="http://www.w3.org/2000/svg" 
@@ -122,7 +121,7 @@
                     </svg>
                     <br>
                     <!-- This button will dissapear the popup -->
-                    <button onclick="tryAgain()" href="" 
+                    <button id="tryAgainButton" 
                     class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                     width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="bevel"> 
@@ -176,7 +175,7 @@
                 </div>
             </form>
 
-            <button onclick="launchDialog()" href="" class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">Send
+            <button id="sendButton" class="btn btn-primary rounded-bl-lg rounded-br-lg !py-1.5 w-full flex gap-x-1.5 items-center justify-center">Send
                 Money<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                     <path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm440 240H120q-33 0-56.5-23.5T40-240v-440h80v440h680v80ZM280-400v-320 320Z"></path>
                 </svg></button>
@@ -188,22 +187,6 @@
                 </button>
             </div>
 
-<!-- <script type="module" src="../functions.js"></script>
- -->
-        <script>
-            function tryAgain() {
-                const wrongRecipient = document.getElementById('wrongRecipient');
-                wrongRecipient.close();
-            }
-
-            function launchDialog() {
-                const d = document.getElementById('wrongRecipient');
-                wrongRecipient.showModal();
-            }
-
-            
-
-        </script>
 </body>
 
 <footer>
