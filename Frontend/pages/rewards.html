@@ -98,7 +98,7 @@
                 <div class="ml-auto w-full">
                     <div class="flex items-center w-full">
                         <h4 class="font-semibold currentLevel text-sm shrink-0">Level ...</h4>   
-                        <p class="text-[10px] ml-auto">33 points until level 5</p>
+                        <p class="text-[10px] ml-auto"><span class="fullLevelText"><span class="font-medium pointsRemainingToNextLevel">...</span> points until <span class="nextLevel">Level ...</span></span></p>
                     </div>
 
                     <div class="bg-[#F5F5F5] w-24 h-4 rounded-md border border-black w-full">
@@ -109,7 +109,7 @@
         </div>
 
         <div class="border-t border-b border-primary mt-4 text-center bg-white py-8">
-            <h3 class="text-5xl font-bold text-primary">267</h3>
+            <h3 class="text-5xl font-bold text-primary greenScore">...</h3>
             <p class="text-xs">points earned</p>
         </div>
 
@@ -196,70 +196,8 @@
             </div>
 
             <div class="container mt-8">
-                <div class="bg-white flex relative shadow-md border border-gray-300 relative" onclick="showDialog()">
-                    <svg class="absolute top-1 right-4 text-gray-400 h-7 w-7" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-                    <img src="https://via.placeholder.com/1280x720" alt="" class="w-16 mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
-                        <div class="p-2">
-                            <h4 class="text-primary">Reward Name</h4>
-                            <p class="text-xs">Short reward description</p>
-                        </div>
-                    </div>
-                    <p class="absolute text-primary right-4 bottom-2 text-xs"><span class="font-semibold">50</span> points</p>
-                </div>
-
-                <div class="bg-white flex relative shadow-md border border-gray-300 relative mt-2" onclick="showDialog()">
-                    <svg class="absolute top-1 right-4 text-gray-400 h-7 w-7" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-                    <img src="https://via.placeholder.com/1280x720" alt="" class="w-16 mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
-                        <div class="p-2">
-                            <h4 class="text-primary">Reward Name</h4>
-                            <p class="text-xs">Short reward description</p>
-                        </div>
-                    </div>
-                    <p class="absolute text-primary right-4 bottom-2 text-xs"><span class="font-semibold">50</span> points</p>
-                </div>
-
-                <div class="bg-white flex relative shadow-md border border-gray-300 relative mt-2" onclick="showDialog()">
-                    <svg class="absolute top-1 right-4 text-gray-400 h-7 w-7" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-                    <img src="https://via.placeholder.com/1280x720" alt="" class="w-16 mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
-                        <div class="p-2">
-                            <h4 class="text-primary">Reward Name</h4>
-                            <p class="text-xs">Short reward description</p>
-                        </div>
-                    </div>
-                    <p class="absolute text-primary right-4 bottom-2 text-xs"><span class="font-semibold">50</span> points</p>
-                </div>
-
-                <div class="bg-white flex relative shadow-md border border-gray-300 relative mt-2" onclick="showDialog()">
-                    <svg class="absolute top-1 right-4 text-gray-400 h-7 w-7" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-                    <img src="https://via.placeholder.com/1280x720" alt="" class="w-16 mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
-                        <div class="p-2">
-                            <h4 class="text-primary">Reward Name</h4>
-                            <p class="text-xs">Short reward description</p>
-                        </div>
-                    </div>
-                    <p class="absolute text-primary right-4 bottom-2 text-xs"><span class="font-semibold">50</span> points</p>
-                </div>
-
-                <div class="bg-white flex relative shadow-md border border-gray-300 relative mt-2" onclick="showDialog()">
-                    <svg class="absolute top-1 right-4 text-gray-400 h-7 w-7" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-                    <img src="https://via.placeholder.com/1280x720" alt="" class="w-16 mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
-                        <div class="p-2">
-                            <h4 class="text-primary">Reward Name</h4>
-                            <p class="text-xs">Short reward description</p>
-                        </div>
-                    </div>
-                    <p class="absolute text-primary right-4 bottom-2 text-xs"><span class="font-semibold">50</span> points</p>
-                </div>
+                <div id="allRewards"></div>
+            </div>
         </div>
         
         <div id="dialog" class="w-full py-4 fixed bg-white border-gray-400 top-1/3 z-20 hidden">
@@ -267,12 +205,11 @@
             <div class="flex items-center border-b border-primary px-4 pb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00A4D3"><path d="m668-380 152-130 120 10-176 153 52 227-102-62-46-198Zm-94-292-42-98 46-110 92 217-96-9ZM294-287l126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM173-120l65-281L20-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-340Z"/></svg>
                 <div class="px-2">
-                    <h4 class="text-primary font-semibold">Reward Name</h4>
-                    <p class="text-xs">Short reward description</p>
+                    <h4 id="rewardNameBox" class="text-primary font-semibold">Reward Name</h4>
                 </div>
             </div>
             <div class="text-center mt-4">
-                <p class="text-sm">This reward costs <span class="font-semibold">50</span> points</p>
+                <p class="text-sm">This reward costs <span id="rewardPointsBox" class="font-semibold">50</span> points</p>
                 <button class="btn btn-primary rounded-lg mt-4">Redeem</button>
             </div>
         </div>
@@ -280,12 +217,18 @@
 <!--     <script type="module" src="../functions.js"></script> -->
      <script>
         //press the button and shows the dialog
-        function showDialog()
+        function showDialog(rewardName, points)
         {
             const dialog = document.getElementById('dialog');
             const page_mask = document.getElementById('page_mask');
             dialog.classList.remove('hidden');
             page_mask.classList.remove('hidden');
+
+            const rewardNameBox = document.getElementById('rewardNameBox');
+            const rewardPointsBox = document.getElementById('rewardPointsBox');
+
+            rewardNameBox.innerHTML = rewardName;
+            rewardPointsBox.innerHTML = points;
         }
 
         function hideDialog(){
@@ -320,6 +263,8 @@
             }
         }
      </script>
+
+    <script type="module" src="../rewards.js"></script>
 </body>
 
 <footer>
