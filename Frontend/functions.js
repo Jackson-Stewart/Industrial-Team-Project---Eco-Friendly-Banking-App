@@ -7,6 +7,7 @@ var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
+var targetTransactions = document.getElementsByClassName("latestTransactions");
 var extension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
     extension = "?accountNumber=" + localStorage.getItem("accountNumber");
