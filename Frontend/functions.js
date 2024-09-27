@@ -27,7 +27,6 @@ async function parseJSONObject(type) {
         case "Account":
             return new Promise((resolve, reject) => {
                 const apiUrl = url + "/api" + extension;
-                console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
@@ -42,7 +41,6 @@ async function parseJSONObject(type) {
         case "Transaction":
             return new Promise((resolve, reject) => {
                 const apiUrl = url + "/api/transactions" + extension;
-                console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
@@ -52,32 +50,22 @@ async function parseJSONObject(type) {
                         let today = new Date().toISOString().slice(0, 10);
                         for (var index in data) {
                             var div = document.createElement("div");
+                            var anchor = document.createElement("a");
                             var accountNameTo = document.createElement("p");
                             var accountNumberTo = document.createElement("p");
                             var date = document.createElement("p");
                             var money = document.createElement("p");
                             var transactionContainer = document.createElement("div");
 
-                            if (data[index].calculatedGreenScore < 0.3) // Red
-                            {
-                                transactionContainer.classList.add("transaction", "bg-red-200");
-                            }
-                            else if (data[index].calculatedGreenScore < 0.7)
-                            {
-                                transactionContainer.classList.add("transaction", "bg-orange-200");
-                            }
-                            else
-                            {
-                                transactionContainer.classList.add("transaction", "bg-green-200");
-                            }
+                            setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
 
+                            anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data[index].transaction_id.$oid);
                             transactionContainer.classList.add("transaction", "bg-green-200");
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
                             date.classList.add("text-xs");
                             money.classList.add("ml-auto", "font-medium", "text-base")
 
-                            console.log(data[index]);
                             accountNameTo.innerHTML = data[index].recipientName;
                             accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
                             date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
@@ -88,8 +76,8 @@ async function parseJSONObject(type) {
                             append(div, date);
                             append(transactionContainer, div);
                             append(transactionContainer, money);
-                            console.log(targetTransactions + " " + transactionContainer);
-                            append(targetTransactions, transactionContainer);
+                            append(anchor, transactionContainer);
+                            append(targetTransactions, anchor);
 
                             if (index === 7)
                             {
@@ -102,6 +90,21 @@ async function parseJSONObject(type) {
             break;
         default:
             return false;
+    }
+}
+
+function setBackgroundColour(rating, container) {
+    if (rating < 0.3) // Red
+    {
+        container.classList.add("transaction", "bg-red-200");
+    }
+    else if (rating < 0.7)
+    {
+        container.classList.add("transaction", "bg-orange-200");
+    }
+    else if (rating <= 1)
+    {
+        container.classList.add("transaction", "bg-green-200");
     }
 }
 
@@ -123,7 +126,7 @@ function calculateLevel(score) {
 
             var levelProgress = (score-lastBoundary)/(boundary-lastBoundary) * 100;
 
-            return [level, remaining, levelProgress];
+            return [level, remaining, levelProgress]
         }
         else if (level == 9)
         {

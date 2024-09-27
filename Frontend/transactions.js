@@ -64,7 +64,6 @@ async function parseJSONObject(type) {
                             setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
                             // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
                             anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
-                            console.log(anchor);
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
                             date.classList.add("text-xs");
@@ -87,9 +86,8 @@ async function parseJSONObject(type) {
                             if (date.innerHTML === today)
                             {
                                 let copy = document.createElement("div");
-                                setBackgroundColour(data[index].calculatedGreenScore, copy);
-                                copy.innerHTML = transactionContainer.innerHTML;
-                                append(targetTodaysTransactions, anchor);
+                                copy.innerHTML = JSON.parse(JSON.stringify(anchor.innerHTML));
+                                append(targetTodaysTransactions, copy);
                             }   
                         }
                         resolve(data);
@@ -125,7 +123,7 @@ async function refreshTransactionPage() {
     setTimeout(() => { showMainPage() }, 3500);
     const object = await parseJSONObject('Account')
     const transactionObject = await parseJSONObject('Transaction');
-
+    
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document
 }

@@ -4,6 +4,8 @@ const url = 'https://efnn495zpi.execute-api.us-east-1.amazonaws.com';
 window.onload = loadingDetailsOfTransactions;
 
 var targetCompanyItem = document.getElementById("betterCompanies");
+var targetName = document.getElementsByClassName("accountName");
+var targetNumber = document.getElementsByClassName("accountNumber");
 
 // Determine the API extension based on stored account information
 var getExtension = '';
@@ -15,6 +17,20 @@ if (localStorage.getItem('accountNumber') != 'undefined') {
 
 function append(parent, el) {
     return parent.appendChild(el);
+}
+
+async function fetchAccountDetails() {
+    const apiUrl = url + '/api' + getExtension;
+    try {
+        const response = await fetch(apiUrl, {
+            cache: 'no-cache',
+            method: 'GET',
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching account details:', error);
+        return null;
+    }
 }
 
 // Fetching selected transaction details from API
@@ -90,6 +106,9 @@ async function loadingDetailsOfTransactions() {
             if (transactionDetails) {
                 displayTransactionDetails(transactionDetails);
                 const data = await fetchBetterCompanies((transactionDetails[0].calculatedGreenScore.toFixed(2)), transactionDetails[0].spendingCategory)
+                const accountDetails = await fetchAccountDetails();
+                targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
+                targetName[0].innerText = accountDetails[0].name;
 
                 for (var index in data) {
                     var div = document.createElement("div");
