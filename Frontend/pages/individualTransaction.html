@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title></title>
+    <style>
+        .containerForTransactionList {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .sectionforTransactions {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e1e5e7;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .t {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sectionforDetails {
+            max-height: 250px;
+            border: 1px solid #e1e5e7;
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="full">
+        <div class="bg-primary text-white pt-12 pb-24 border-b border-black">
+            <div class="container grid grid-cols-2 items-center">
+                <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><svg xmlns="http://www.w3.org/2000/svg"
+                        height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                        <path
+                            d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+                    </svg>Home
+                </h2>
+                <div class="">
+                    <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
+                        <p class="text-xs text-black accountNumber">...</p>
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-center text-xl mt-4">Hello <span class="font-bold accountName">...</span></h1>
+            <p class="text-center text-s mt-2">View the details of this selected transaction</p>
+        </div>
+
+
+
+        <div class="containerForTransactionList">
+            <div class="flex items-center mb-10 mt-1">
+                <div class="-mt-7 shadow-lg rounded-bl-lg rounded-br-lg">
+                    <div class="mt-8 mx-5 ">
+                        <div class="sectionforDetails">
+                            <h2 class="text-xl mt-4">Details</h2>
+                            <div>
+                                <p class="font-medium">Vendor Name: </p>
+
+                            </div>
+                            <div>
+                                <p class="font-medium">Spending Category: </p>
+
+                            </div>
+                            <div>
+                                <p class="font-medium">Amount Sent: £</p>
+
+                            </div>
+                            <div>
+                                <p class="font-medium">RAG Rating: </p>
+
+                            </div>
+                        </div>
+
+
+                        <div class="-mt-7 shadow-lg rounded-bl-lg rounded-br-lg">
+                            <div class="mt-8 ">
+                                <div class="sectionforDetails">
+                                    <h2 class="text-xl mt-4">Enviornmental Impact of this Company</h2>
+                                    <div>
+                                        <p class="font-medium">Carbon Emissions Rating:</p>
+
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Waste Management Rating:</p>
+
+                                    </div>
+                                    <div>
+                                        <p class="font-medium">Sustainable Practices Rating:</p>
+
+                                    </div>
+                                    <p class="mt-3"> Overall, this company uses business practices that results in ...
+                                        to the environment.</p>
+                                </div>
+
+                                <div class="-mt-7 shadow-lg rounded-bl-lg rounded-br-lg">
+                                    <div class="mt-8 ">
+                                        <div class="sectionforTransactions">
+                                            <h2 class="text-xl mt-4">List of suggested alternative companies to buy
+                                                from:</h2>
+                                            <p class="text-s mt-2">Consider using these companies with better environmental scores next time you purchase
+                                                from this spending category,
+                                                it will improve your environmental impact score and offer potential
+                                                rewards!</p>
+                                            <div id="betterCompanies"></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <button id="backToTransactionBtn"
+                                            class="btn bg-primary text-white rounded-md !py-1.5 w-full flex gap-x-1.5 items-center justify-center mt-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
+                                                viewBox="0 -960 960 960" width="24px" fill="currentColor">
+                                                <path
+                                                    d="m140-220-60-60 300-300 160 160 284-320 56 56-340 384-160-160-240 240Z" />
+                                            </svg>
+                                            Back To All Transactions
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <script type="module" src="../transactionFunction.js"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
