@@ -51,12 +51,12 @@ function displayTransactionDetails(transaction) {
     const detailsSection = document.querySelector('.sectionforDetails');
     if (!detailsSection) return;
 
-    console.log(transaction[0]);
     // Update details 
     detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
     detailsSection.querySelector('div:nth-child(3) p').textContent = 'Spending Category: ' + (transaction[0].spendingCategory);
     detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
     detailsSection.querySelector('div:nth-child(5) p').textContent = 'RAG Rating: ' + transaction[0].calculatedGreenScore.toFixed(2); //displaying RAG rating fixed to 2 decimal places
+    detailsSection.querySelector('div:nth-child(6) p').textContent = 'Reference: ' + transaction[0].reference;
 
     // Update environmental impact details
     const impactSection = document.querySelectorAll('.sectionforDetails')[1];
@@ -74,7 +74,7 @@ function displayTransactionDetails(transaction) {
 
 function determineOverallImpact(greenScore) {
     if (greenScore >= 0.7) return 'no harm';
-    if (greenScore >= 0.4) return 'harm';
+    if (greenScore >= 0.3) return 'harm';
     return 'extreme harm';
 }
 
@@ -90,7 +90,6 @@ async function loadingDetailsOfTransactions() {
             if (transactionDetails) {
                 displayTransactionDetails(transactionDetails);
                 const data = await fetchBetterCompanies((transactionDetails[0].calculatedGreenScore.toFixed(2)), transactionDetails[0].spendingCategory)
-                console.log(data[0]);
 
                 for (var index in data) {
                     var div = document.createElement("div");

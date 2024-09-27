@@ -39,7 +39,7 @@ async function parseJSONObject(type) {
             break;
         case "Transaction":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api/transactions" + getExtension;
+                const apiUrl = url + "/api/transactions" + extension;
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',

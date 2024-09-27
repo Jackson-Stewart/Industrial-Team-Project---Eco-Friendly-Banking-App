@@ -54,31 +54,22 @@ async function parseJSONObject(type) {
                         let today = new Date().toISOString().slice(0, 10);
                         for (var index in data) {
                             var div = document.createElement("div");
+                            var anchor = document.createElement("a");
                             var accountNameTo = document.createElement("p");
                             var accountNumberTo = document.createElement("p");
                             var date = document.createElement("p");
                             var money = document.createElement("p");
                             var transactionContainer = document.createElement("div");
                             
-                            if (data[index].calculatedGreenScore < 0.3) // Red
-                            {
-                                transactionContainer.classList.add("transaction", "bg-red-200");
-                            }
-                            else if (data[index].calculatedGreenScore < 0.7)
-                            {
-                                transactionContainer.classList.add("transaction", "bg-orange-200");
-                            }
-                            else if (data[index].calculatedGreenScore <= 1)
-                            {
-                                transactionContainer.classList.add("transaction", "bg-green-200");
-                            }
-
+                            setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
+                            // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
+                            anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
+                            console.log(anchor);
                             accountNameTo.classList.add("font-medium");
                             accountNumberTo.classList.add("text-xs");
                             date.classList.add("text-xs");
                             money.classList.add("ml-auto", "font-medium", "text-base")
 
-                            console.log(data[index].calculatedGreenScore);
                             accountNameTo.innerHTML = data[index].recipientName;
                             accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
                             date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
@@ -89,21 +80,17 @@ async function parseJSONObject(type) {
                             append(div, date);
                             append(transactionContainer, div);
                             append(transactionContainer, money);
-                            append(targetAllTransactions, transactionContainer);
+                            append(anchor, transactionContainer);
+                            append(targetAllTransactions, anchor);
 
                             // If transaction was made today, append also to today's lists
                             if (date.innerHTML === today)
                             {
                                 let copy = document.createElement("div");
-                                copy.classList.add("transaction", "bg-green-200");
+                                setBackgroundColour(data[index].calculatedGreenScore, copy);
                                 copy.innerHTML = transactionContainer.innerHTML;
-                                append(targetTodaysTransactions, copy);
+                                append(targetTodaysTransactions, anchor);
                             }   
-
-                            if (index === 7)
-                            {
-                                break; // Do not exceed 7 containers
-                            }
                         }
                         resolve(data);
                     })
@@ -141,4 +128,19 @@ async function refreshTransactionPage() {
 
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document
+}
+
+function setBackgroundColour(rating, container) {
+    if (rating < 0.3) // Red
+    {
+        container.classList.add("transaction", "bg-red-200");
+    }
+    else if (rating < 0.7)
+    {
+        container.classList.add("transaction", "bg-orange-200");
+    }
+    else if (rating <= 1)
+    {
+        container.classList.add("transaction", "bg-green-200");
+    }
 }
