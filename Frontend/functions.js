@@ -8,11 +8,11 @@ var targetBalance = document.getElementsByClassName("balance");
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevels = document.getElementsByClassName("currentLevel");
 var targetTransactions = document.getElementsByClassName("latestTransactions");
-var extension = "";
+var getExtension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
-    extension = "?accountNumber=" + localStorage.getItem("accountNumber");
+    getExtension = "?accountNumber=" + localStorage.getItem("accountNumber");
 } else {
-    extension = "?name=" + localStorage.getItem("name");
+    getExtension = "?name=" + localStorage.getItem("name");
 }
 
 function append(parent, el) {
@@ -25,7 +25,8 @@ async function parseJSONObject(type) {
     switch (type) {
         case "Account":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api" + extension;
+                const apiUrl = url + "/api" + getExtension;
+                console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
@@ -39,7 +40,8 @@ async function parseJSONObject(type) {
             break;
         case "Transaction":
             return new Promise((resolve, reject) => {
-                const apiUrl = url + "/api/transactions" + extension;
+                const apiUrl = url + "/api/transactions" + getExtension;
+                console.log(apiUrl);
                 fetch(apiUrl, {
                     cache: 'no-cache',
                     method: 'GET',
