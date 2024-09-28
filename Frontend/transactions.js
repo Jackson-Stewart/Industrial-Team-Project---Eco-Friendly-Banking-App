@@ -125,11 +125,13 @@ function showMainPage() {
 
 async function refreshTransactionPage() {
     hideMainPage();
-    setTimeout(() => { showMainPage() }, 3500);
     const object = await parseJSONObject('Account')
     const transactionObject = await parseJSONObject('Transaction');
 
-    console.log(transactionObject[0]);
+    if ((object) && (transactionObject))
+    {
+        showMainPage()
+    }
     
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document

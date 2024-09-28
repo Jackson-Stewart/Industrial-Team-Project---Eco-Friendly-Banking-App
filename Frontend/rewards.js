@@ -178,9 +178,13 @@ function showMainPage() {
 
 async function refreshRewardsPage() {
     hideMainPage();
-    setTimeout(() => { showMainPage() }, 3500);
     const object = await parseJSONObject('Reward');
     const accountObject = await parseJSONObject('Account');
+
+    if ((object) && (accountObject))
+    {
+        showMainPage()
+    }
 
     targetNumber[0].innerText = "Account number: " + accountObject.accountNumber; // Change account number within the document
     targetGreenScore[0].innerText = accountObject.currentGreenScore;

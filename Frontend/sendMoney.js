@@ -69,8 +69,12 @@ button.onclick = async function sendMoneyClick() {
 
 async function refreshPage() {
     hideMainHomePage();
-    setTimeout(() => { showMainHomePage() }, 1500);
     const object = await parseJSONObject("GET", "accounts")
+
+    if ((object) && (accountObject))
+    {
+        showMainHomePage()
+    }
 
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document

@@ -41,12 +41,72 @@
             border-radius: 0.375rem;
             padding: 0.5rem;
             margin-bottom: 0.5rem;
+        }
 
+        .loader {
+            text-align: center;
+        }
+
+        .gfg {
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: calc(50% - 1em);
+            border-radius: 1em;
+            transform-origin: 1em 2em;
+            animation: rotate;
+            animation-iteration-count: infinite;
+            animation-duration: 1.8s;
+        }
+
+        /* Rotation of loader dots */
+        @keyframes rotate {
+            from {
+                transform: rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        .g1 {
+            animation-delay: 0.1s;
+            background-color: #13274F;
+
+        }
+
+        .g2 {
+            animation-delay: 0.2s;
+            background-color: #0066b2;
+        }
+
+        .g3 {
+            animation-delay: 0.3s;
+            background-color: #6CB4EE;
+        }
+
+        .g4 {
+            animation-delay: 0.4s;
+            background-color: #89CFF0;
+        }
+
+        .g5 {
+            animation-delay: 0.5s;
+            background-color: #F0F8FF;
         }
     </style>
 </head>
 
 <body>
+    <div class='loader'></div>
+        <div class='gfg g1'></div>
+        <div class='gfg g2'></div>
+        <div class='gfg g3'></div>
+        <div class='gfg g4'></div>
+        <div class='gfg g5'></div>
+    </div>
 
     <div class="full">
         <div class="bg-primary text-white pt-12 pb-24 border-b border-black">

@@ -97,19 +97,27 @@ function determineOverallImpact(greenScore) {
 //Load details of the transaction
 async function loadingDetailsOfTransactions() {
     // Get transaction ID from URL parameter
+    hidePage();
     const urlParams = new URLSearchParams(window.location.search);
     const transactionId = urlParams.get('id');
 
     if (transactionId) {
         try {
             const transactionDetails = await fetchTransactionDetails(transactionId);
+            const accountDetails = await fetchAccountDetails();
+            targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
+            targetName[0].innerText = accountDetails[0].name;
+
+            if ((accountDetails) && (transactionDetails))
+            {
+                showPage()
+            }
+
             if (transactionDetails) {
                 displayTransactionDetails(transactionDetails);
                 const data = await fetchBetterCompanies((transactionDetails[0].calculatedGreenScore.toFixed(2)), transactionDetails[0].spendingCategory)
                 const accountDetails = await fetchAccountDetails();
-                targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
-                targetName[0].innerText = accountDetails[0].name;
-
+               
                 for (var index in data) {
                     var div = document.createElement("div");
                     var accountName = document.createElement("p");
@@ -161,3 +169,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Hides main content while API fetch completes, instead showing a loader
+function hidePage() {
+    document.getElementsByClassName("full")[0].style.visibility = 'hidden';
+    document.getElementsByClassName("loader")[0].style.visibility = 'visible';
+}
+
+// Shows main content (intended after fetch completes), and hides loader
+function showPage() {
+    document.getElementsByClassName("full")[0].style.visibility = 'visible';
+    document.getElementsByClassName("loader")[0].style.visibility = 'hidden';
+}

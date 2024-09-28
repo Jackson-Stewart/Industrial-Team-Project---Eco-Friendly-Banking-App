@@ -172,9 +172,13 @@ function showMainHomePage() {
 // Show loading page for 2 seconds before displaying actual page.
 async function refreshHomePage() {
     hideMainHomePage();
-    setTimeout(() => { showMainHomePage() }, 2300);
     const object = await parseJSONObject('Account')
     const transactions = await parseJSONObject('Transaction')
+
+    if ((object) && (transactions))
+    {
+        showMainHomePage()
+    }
 
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
