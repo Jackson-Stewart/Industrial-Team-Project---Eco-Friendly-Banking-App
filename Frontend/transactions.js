@@ -96,7 +96,7 @@ async function parseJSONObject(type) {
                                 if (date.innerHTML === today)
                                 {
                                     let copy = document.createElement("div");
-                                    copy.innerHTML = JSON.parse(JSON.stringify(anchor.innerHTML));
+                                    copy.innerHTML = JSON.parse(JSON.stringify(targetAllTransactions.innerHTML));
                                     append(targetTodaysTransactions, copy);
                                 }   
                             }

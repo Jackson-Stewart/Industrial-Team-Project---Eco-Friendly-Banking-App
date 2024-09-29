@@ -91,9 +91,9 @@ async function parseJSONObject(type) {
                                 append(anchor, transactionContainer);
                                 append(targetTransactions, anchor);
     
-                                if (index == 7)
+                                if (index == 4)
                                 {
-                                    break; // Do not exceed 7 containers
+                                    break; // Do not exceed 5 containers
                                 }
                             }
                         }
