@@ -56,44 +56,48 @@ async function parseJSONObject(type) {
                                 resolve(data);
                                 return;
                             }
-                        let today = new Date().toISOString().slice(0, 10);
-                        for (var index in data) {
-                            var div = document.createElement("div");
-                            var anchor = document.createElement("a");
-                            var accountNameTo = document.createElement("p");
-                            var accountNumberTo = document.createElement("p");
-                            var date = document.createElement("p");
-                            var money = document.createElement("p");
-                            var transactionContainer = document.createElement("div");
-                            
-                            setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
-                            // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-                            anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
-                            accountNameTo.classList.add("font-medium");
-                            accountNumberTo.classList.add("text-xs");
-                            date.classList.add("text-xs");
-                            money.classList.add("ml-auto", "font-medium", "text-base")
+                        
+                        // Only create transaction items if valid transactions exist
+                        if (Object.getOwnPropertyNames(data[0]).includes('timestamp')) {
+                            let today = new Date().toISOString().slice(0, 10);
+                            for (var index in data) {
+                                var div = document.createElement("div");
+                                var anchor = document.createElement("a");
+                                var accountNameTo = document.createElement("p");
+                                var accountNumberTo = document.createElement("p");
+                                var date = document.createElement("p");
+                                var money = document.createElement("p");
+                                var transactionContainer = document.createElement("div");
+                                
+                                setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
+                                // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
+                                anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
+                                accountNameTo.classList.add("font-medium");
+                                accountNumberTo.classList.add("text-xs");
+                                date.classList.add("text-xs");
+                                money.classList.add("ml-auto", "font-medium", "text-base")
 
-                            accountNameTo.innerHTML = data[index].recipientName;
-                            accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                            date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
-                            money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                accountNameTo.innerHTML = data[index].recipientName;
+                                accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
+                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
+                                money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
 
-                            append(div, accountNameTo);
-                            append(div, accountNumberTo);
-                            append(div, date);
-                            append(transactionContainer, div);
-                            append(transactionContainer, money);
-                            append(anchor, transactionContainer);
-                            append(targetAllTransactions, anchor);
+                                append(div, accountNameTo);
+                                append(div, accountNumberTo);
+                                append(div, date);
+                                append(transactionContainer, div);
+                                append(transactionContainer, money);
+                                append(anchor, transactionContainer);
+                                append(targetAllTransactions, anchor);
 
-                            // If transaction was made today, append also to today's lists
-                            if (date.innerHTML === today)
-                            {
-                                let copy = document.createElement("div");
-                                copy.innerHTML = JSON.parse(JSON.stringify(anchor.innerHTML));
-                                append(targetTodaysTransactions, copy);
-                            }   
+                                // If transaction was made today, append also to today's lists
+                                if (date.innerHTML === today)
+                                {
+                                    let copy = document.createElement("div");
+                                    copy.innerHTML = JSON.parse(JSON.stringify(anchor.innerHTML));
+                                    append(targetTodaysTransactions, copy);
+                                }   
+                            }
                         }
                         resolve(data);
                     })

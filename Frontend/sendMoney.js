@@ -18,6 +18,7 @@ async function parseJSONObject(type, callType) {
     let userObject = '';
     return new Promise((resolve, reject) => {
         const apiUrl = url + "/api/"+ callType + extension;
+        console.log(apiUrl);
         fetch(apiUrl, {
             cache: 'no-cache',
             method: type,
