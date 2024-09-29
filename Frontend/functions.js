@@ -49,12 +49,11 @@ async function parseJSONObject(type) {
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data[0]);
-                        if (data[0].timestamp === undefined)
+                        if (data[0] === undefined)
                         {
                             resolve(data);
                             return;
                         }
-
                         for (var index in data) {
                             var div = document.createElement("div");
                             var anchor = document.createElement("a");

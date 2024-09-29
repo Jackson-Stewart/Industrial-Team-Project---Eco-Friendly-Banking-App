@@ -71,7 +71,7 @@ async function refreshPage() {
     hideMainHomePage();
     const object = await parseJSONObject("GET", "accounts")
 
-    if ((object) && (accountObject))
+    if ((object))
     {
         showMainHomePage()
     }

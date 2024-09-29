@@ -51,7 +51,7 @@ async function parseJSONObject(type) {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        if (data[0].timestamp === undefined)
+                        if (data[0] === undefined)
                             {
                                 resolve(data);
                                 return;
