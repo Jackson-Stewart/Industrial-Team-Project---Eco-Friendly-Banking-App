@@ -71,18 +71,28 @@ async function parseJSONObject(type) {
                                 var money = document.createElement("p");
                                 var transactionContainer = document.createElement("div");
                                 
-                                setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
+                                // Check if the transaction is made TO current account, thus a postive transaction
+                                if (data[index].name !== localStorage.getItem('name'))
+                                {
+                                    transactionContainer.classList.add("transaction", "bg-slate-200");
+                                    money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
+                                    money.innerHTML = "+£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                    anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data[index].accountNumberTo + "&id=" + data[index].transaction_id.$oid);
+                                } else {
+                                     setBackgroundColour(data[index].calculatedGreenScore, transactionContainer); 
+                                     money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
+                                     money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                     anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
+                                    }
+
                                 // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-                                anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
                                 accountNameTo.classList.add("font-medium");
                                 accountNumberTo.classList.add("text-xs");
                                 date.classList.add("text-xs");
-                                money.classList.add("ml-auto", "font-medium", "text-base")
 
                                 accountNameTo.innerHTML = data[index].recipientName;
                                 accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
                                 date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
-                                money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
 
                                 append(div, accountNameTo);
                                 append(div, accountNumberTo);

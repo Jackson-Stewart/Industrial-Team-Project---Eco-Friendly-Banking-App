@@ -34,8 +34,9 @@ async function fetchAccountDetails() {
 }
 
 // Fetching selected transaction details from API
-async function fetchTransactionDetails(id) {
-    const apiUrl = url + '/api/transactions' + getExtension + "&id=" + id;
+async function fetchTransactionDetails(account, id) {
+    const apiUrl = url + '/api/transactions?accountNumber=' + account + "&id=" + id;
+    console.log(apiUrl);
     try {
         const response = await fetch(apiUrl, {
             cache: 'no-cache',
@@ -94,9 +95,20 @@ function displayNonCompanyDetails(transaction)
     if (!detailsSection) return;
 
     // Update details 
-    detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
+
+    // Check if it's a transaction being made to the current logged account
+    if (transaction[0].recipientName === localStorage.getItem('name'))
+    {
+        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Name: ' + transaction[0].name;
+        detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Received: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    }
+    else
+    {
+        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
+        detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    }
+    
     detailsSection.querySelector('div:nth-child(3) p').remove();
-    detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
     detailsSection.querySelector('div:nth-child(5) p').remove();
     detailsSection.querySelector('div:nth-child(6) p').textContent = 'Reference: ' + transaction[0].reference;
 
@@ -125,10 +137,11 @@ async function loadingDetailsOfTransactions() {
     hidePage();
     const urlParams = new URLSearchParams(window.location.search);
     const transactionId = urlParams.get('id');
+    const accountNumberToUse = urlParams.get('accountNumber')
 
     if (transactionId) {
         try {
-            const transactionDetails = await fetchTransactionDetails(transactionId);
+            const transactionDetails = await fetchTransactionDetails(accountNumberToUse, transactionId);
             const accountDetails = await fetchAccountDetails();
             targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
             targetName[0].innerText = accountDetails[0].name;
@@ -138,7 +151,7 @@ async function loadingDetailsOfTransactions() {
                 const accountDetails = await fetchAccountDetails();
                 if (transactionDetails[0].calculatedGreenScore.toFixed(2) == 0.00) {
                     console.log("Not a company, skipping fetching the better companies...");
-
+                    console.log(transactionDetails[0]);
                     displayNonCompanyDetails(transactionDetails);
                 }
                 else {

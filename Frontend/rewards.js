@@ -37,6 +37,7 @@ async function parseJSONObject(type) {
                 .then((response) => response.json())
                 .then((data) => {
                     userObject = data[0];
+
                     resolve(userObject);
                 })
 
