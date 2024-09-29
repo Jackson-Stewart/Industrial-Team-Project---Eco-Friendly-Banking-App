@@ -59,8 +59,10 @@ async function parseJSONObject(type) {
                         
                         // Only create transaction items if valid transactions exist
                         if (Object.getOwnPropertyNames(data[0]).includes('timestamp')) {
+                            sortTransactionsByDate(data);
                             let today = new Date().toISOString().slice(0, 10);
                             for (var index in data) {
+                                console.log(data[index]);
                                 var div = document.createElement("div");
                                 var anchor = document.createElement("a");
                                 var accountNameTo = document.createElement("p");
@@ -159,4 +161,14 @@ function setBackgroundColour(rating, container) {
     {
         container.classList.add("transaction", "bg-green-200");
     }
+}
+
+// Order by their date. For some reason this won't work in the Lambda function correctly, but it does so here...
+function sortTransactionsByDate(transactions) {
+    transactions.sort((a, b) => {
+        const dateA = new Date(a.timestamp.$date);
+        const dateB = new Date(b.timestamp.$date);
+
+        return dateB - dateA;
+    });
 }

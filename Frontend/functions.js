@@ -59,6 +59,7 @@ async function parseJSONObject(type) {
                         // Only create transaction items if valid transactions exist
                         if (Object.getOwnPropertyNames(data[0]).includes('timestamp'))
                         {
+                            sortTransactionsByDate(data);
                             for (var index in data) {
                                 var div = document.createElement("div");
                                 var anchor = document.createElement("a");
@@ -207,4 +208,14 @@ async function refreshHomePage() {
         document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
         targetPointsRemaining[0].innerText = Math.round(values[1]);
     }
+}
+
+// Order by their date. For some reason this won't work in the Lambda function correctly, but it does so here...
+function sortTransactionsByDate(transactions) {
+    transactions.sort((a, b) => {
+        const dateA = new Date(a.timestamp.$date);
+        const dateB = new Date(b.timestamp.$date);
+
+        return dateB - dateA;
+    });
 }

@@ -119,6 +119,10 @@ async function loadingDetailsOfTransactions() {
                 const accountDetails = await fetchAccountDetails();
                
                 for (var index in data) {
+                    // Do not display red companies
+                    if (data[index].rag < 0.3) {
+                        continue;
+                    }
                     var div = document.createElement("div");
                     var accountName = document.createElement("p");
                     var accountNumber = document.createElement("p");
