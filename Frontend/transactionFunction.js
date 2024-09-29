@@ -70,10 +70,11 @@ function displayTransactionDetails(transaction) {
 
     // Update details 
     detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
-    detailsSection.querySelector('div:nth-child(3) p').textContent = 'Spending Category: ' + (transaction[0].spendingCategory);
-    detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
-    detailsSection.querySelector('div:nth-child(5) p').textContent = 'RAG Rating: ' + transaction[0].calculatedGreenScore.toFixed(2); //displaying RAG rating fixed to 2 decimal places
-    detailsSection.querySelector('div:nth-child(6) p').textContent = 'Reference: ' + transaction[0].reference;
+    detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + (transaction[0].accountNumberTo);
+    detailsSection.querySelector('div:nth-child(4) p').textContent = 'Spending Category: ' + (transaction[0].spendingCategory);
+    detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    detailsSection.querySelector('div:nth-child(6) p').textContent = 'RAG Rating: ' + transaction[0].calculatedGreenScore.toFixed(2); //displaying RAG rating fixed to 2 decimal places
+    detailsSection.querySelector('div:nth-child(7) p').textContent = 'Reference: ' + transaction[0].reference;
 
     // Update environmental impact details
     const impactSection = document.querySelectorAll('.sectionforDetails')[1];
@@ -100,17 +101,19 @@ function displayNonCompanyDetails(transaction)
     if (transaction[0].recipientName === localStorage.getItem('name'))
     {
         detailsSection.querySelector('div:nth-child(2) p').textContent = 'Name: ' + transaction[0].name;
-        detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Received: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+        detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + transaction[0].accountNumber;
+        detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Received: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
     }
     else
     {
-        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
-        detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Name: ' + transaction[0].recipientName;
+        detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + transaction[0].accountNumber;
+        detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
     }
     
-    detailsSection.querySelector('div:nth-child(3) p').remove();
-    detailsSection.querySelector('div:nth-child(5) p').remove();
-    detailsSection.querySelector('div:nth-child(6) p').textContent = 'Reference: ' + transaction[0].reference;
+    detailsSection.querySelector('div:nth-child(4) p').remove();
+    detailsSection.querySelector('div:nth-child(6) p').remove();
+    detailsSection.querySelector('div:nth-child(7) p').textContent = 'Reference: ' + transaction[0].reference;
 
     // Update environmental impact details
     const impactSection = document.querySelectorAll('.sectionforDetails')[1];
