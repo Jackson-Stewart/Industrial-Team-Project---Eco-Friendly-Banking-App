@@ -5,7 +5,6 @@ window.onload = refreshTransactionPage; // Refresh home page as soon as page loa
 var targetNumber = document.getElementsByClassName("accountNumber");
 var targetBalance = document.getElementsByClassName("balance");
 var targetAllTransactions = document.getElementById("allTransactions");
-var targetTodaysTransactions = document.getElementById("todaysTransactions");
 var getExtension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
     getExtension = "?accountNumber=" + localStorage.getItem("accountNumber");
@@ -62,7 +61,6 @@ async function parseJSONObject(type) {
                             sortTransactionsByDate(data);
                             let today = new Date().toISOString().slice(0, 10);
                             for (var index in data) {
-                                console.log(data[index]);
                                 var div = document.createElement("div");
                                 var anchor = document.createElement("a");
                                 var accountNameTo = document.createElement("p");
@@ -92,23 +90,26 @@ async function parseJSONObject(type) {
 
                                 accountNameTo.innerHTML = data[index].recipientName;
                                 accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
+                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10));  
 
                                 append(div, accountNameTo);
                                 append(div, accountNumberTo);
                                 append(div, date);
                                 append(transactionContainer, div);
                                 append(transactionContainer, money);
-                                append(anchor, transactionContainer);
-                                append(targetAllTransactions, anchor);
 
                                 // If transaction was made today, append also to today's lists
                                 if (date.innerHTML === today)
-                                {
-                                    let copy = document.createElement("div");
-                                    copy.innerHTML = JSON.parse(JSON.stringify(targetAllTransactions.innerHTML));
-                                    append(targetTodaysTransactions, copy);
-                                }   
+                                    {
+                                        var span = document.createElement("div");
+                                        span.innerHTML = '<span class="mt-1 bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:dark:text-blue-800 border border-blue-400"><svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/></svg>Made Today</span>';
+                                        append(div, span);
+                                    } 
+
+                                append(anchor, transactionContainer);
+                                append(targetAllTransactions, anchor);
+
+                                
                             }
                         }
                         resolve(data);
