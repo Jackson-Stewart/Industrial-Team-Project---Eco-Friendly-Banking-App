@@ -33,7 +33,6 @@ async function checkAccountExists() {
             .then((response) => response.json())
             .then((data) => {
                 if (Object.keys(data).length === 0) {
-                    // Object is empty, reject promise
                     reject();
                 }
                 else { resolve(); }

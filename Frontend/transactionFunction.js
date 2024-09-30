@@ -34,8 +34,9 @@ async function fetchAccountDetails() {
 }
 
 // Fetching selected transaction details from API
-async function fetchTransactionDetails(id) {
-    const apiUrl = url + '/api/transactions' + getExtension + "&id=" + id;
+async function fetchTransactionDetails(account, id) {
+    const apiUrl = url + '/api/transactions?accountNumber=' + account + "&id=" + id;
+    console.log(apiUrl);
     try {
         const response = await fetch(apiUrl, {
             cache: 'no-cache',
@@ -69,10 +70,11 @@ function displayTransactionDetails(transaction) {
 
     // Update details 
     detailsSection.querySelector('div:nth-child(2) p').textContent = 'Vendor Name: ' + transaction[0].recipientName;
-    detailsSection.querySelector('div:nth-child(3) p').textContent = 'Spending Category: ' + (transaction[0].spendingCategory);
-    detailsSection.querySelector('div:nth-child(4) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
-    detailsSection.querySelector('div:nth-child(5) p').textContent = 'RAG Rating: ' + transaction[0].calculatedGreenScore.toFixed(2); //displaying RAG rating fixed to 2 decimal places
-    detailsSection.querySelector('div:nth-child(6) p').textContent = 'Reference: ' + transaction[0].reference;
+    detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + (transaction[0].accountNumberTo);
+    detailsSection.querySelector('div:nth-child(4) p').textContent = 'Spending Category: ' + (transaction[0].spendingCategory);
+    detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    detailsSection.querySelector('div:nth-child(6) p').textContent = 'RAG Rating: ' + transaction[0].calculatedGreenScore.toFixed(2); //displaying RAG rating fixed to 2 decimal places
+    detailsSection.querySelector('div:nth-child(7) p').textContent = 'Reference: ' + transaction[0].reference;
 
     // Update environmental impact details
     const impactSection = document.querySelectorAll('.sectionforDetails')[1];
@@ -80,11 +82,49 @@ function displayTransactionDetails(transaction) {
         impactSection.querySelector('div:nth-child(2) p').textContent = 'Carbon Emissions Rating: ' + transaction[0].carbonEmissionRating;
         impactSection.querySelector('div:nth-child(3) p').textContent = 'Waste Management Rating: ' + transaction[0].wasteManagementRating;
         impactSection.querySelector('div:nth-child(4) p').textContent = 'Sustainable Practices Rating: ' + transaction[0].sustainabilityPracticesRating;
-        
+
         // Reference function to work out environmental impact, and display the corresponding
         //result of the company involved in the transaction
         const overallImpact = determineOverallImpact(transaction[0].calculatedGreenScore);
         impactSection.querySelector('p.mt-3').textContent = 'Overall, this company uses business practices that result in ' + overallImpact + ' to the environment';
+    }
+}
+
+function displayNonCompanyDetails(transaction)
+{
+    const detailsSection = document.querySelector('.sectionforDetails');
+    if (!detailsSection) return;
+
+    // Update details 
+
+    // Check if it's a transaction being made to the current logged account
+    if (transaction[0].recipientName === localStorage.getItem('name'))
+    {
+        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Name: ' + transaction[0].name;
+        detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + transaction[0].accountNumber;
+        detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Received: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    }
+    else
+    {
+        detailsSection.querySelector('div:nth-child(2) p').textContent = 'Name: ' + transaction[0].recipientName;
+        detailsSection.querySelector('div:nth-child(3) p').textContent = 'Account number: ' + transaction[0].accountNumber;
+        detailsSection.querySelector('div:nth-child(5) p').textContent = 'Amount Sent: £' + (Math.round(transaction[0].moneyTransferred * 100) / 100).toFixed(2);
+    }
+    
+    detailsSection.querySelector('div:nth-child(4) p').remove();
+    detailsSection.querySelector('div:nth-child(6) p').remove();
+    detailsSection.querySelector('div:nth-child(7) p').textContent = 'Reference: ' + transaction[0].reference;
+
+    // Update environmental impact details
+    const impactSection = document.querySelectorAll('.sectionforDetails')[1];
+    if (impactSection) {
+        impactSection.remove();
+    }
+
+    const transactionsSection = document.querySelectorAll('.sectionforTransactions')[0];
+    if (transactionsSection) {
+        transactionsSection.querySelector('div:nth-child(2) h2').textContent = "Thank you for using EcoBank and its services!";
+        transactionsSection.querySelector('div:nth-child(2) p').textContent = " In the meantime, check out if there are any rewards you can redeem, or make payments to green companies to gain points!";
     }
 }
 
@@ -97,54 +137,68 @@ function determineOverallImpact(greenScore) {
 //Load details of the transaction
 async function loadingDetailsOfTransactions() {
     // Get transaction ID from URL parameter
+    hidePage();
     const urlParams = new URLSearchParams(window.location.search);
     const transactionId = urlParams.get('id');
+    const accountNumberToUse = urlParams.get('accountNumber')
 
     if (transactionId) {
         try {
-            const transactionDetails = await fetchTransactionDetails(transactionId);
+            const transactionDetails = await fetchTransactionDetails(accountNumberToUse, transactionId);
+            const accountDetails = await fetchAccountDetails();
+            targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
+            targetName[0].innerText = accountDetails[0].name;
+
             if (transactionDetails) {
                 displayTransactionDetails(transactionDetails);
-                const data = await fetchBetterCompanies((transactionDetails[0].calculatedGreenScore.toFixed(2)), transactionDetails[0].spendingCategory)
                 const accountDetails = await fetchAccountDetails();
-                targetNumber[0].innerText = "Account number: " + accountDetails[0].accountNumber;
-                targetName[0].innerText = accountDetails[0].name;
+                if (transactionDetails[0].calculatedGreenScore.toFixed(2) == 0.00) {
+                    console.log("Not a company, skipping fetching the better companies...");
+                    console.log(transactionDetails[0]);
+                    displayNonCompanyDetails(transactionDetails);
+                }
+                else {
+                    const data = await fetchBetterCompanies((transactionDetails[0].calculatedGreenScore.toFixed(2)), transactionDetails[0].spendingCategory)
 
-                for (var index in data) {
-                    var div = document.createElement("div");
-                    var accountName = document.createElement("p");
-                    var accountNumber = document.createElement("p");
-                    var companyContainer = document.createElement("div");
-                    
-                    if (data[index].rag < 0.3) // Red
-                    {
-                        companyContainer.classList.add("transaction", "bg-red-200");
-                    }
-                    else if (data[index].rag < 0.7)
-                    {
-                        companyContainer.classList.add("transaction", "bg-orange-200");
-                    }
-                    else if (data[index].rag <= 1)
-                    {
-                        companyContainer.classList.add("transaction", "bg-green-200");
-                    }
+                    for (var index in data) {
+                        // Do not display red companies
+                        if (data[index].rag < 0.3) {
+                            continue;
+                        }
+                        var div = document.createElement("div");
+                        var accountName = document.createElement("p");
+                        var accountNumber = document.createElement("p");
+                        var companyContainer = document.createElement("div");
 
-                    accountName.classList.add("font-medium");
-                    accountNumber.classList.add("text-xs");
+                        if (data[index].rag < 0.3) // Red
+                        {
+                            companyContainer.classList.add("transaction", "bg-red-200");
+                        }
+                        else if (data[index].rag < 0.7) {
+                            companyContainer.classList.add("transaction", "bg-orange-200");
+                        }
+                        else if (data[index].rag <= 1) {
+                            companyContainer.classList.add("transaction", "bg-green-200");
+                        }
 
-                    accountName.innerHTML = data[index].name;
-                    accountNumber.innerHTML = "Account No: " + data[index].accountNumber;
+                        accountName.classList.add("font-medium");
+                        accountNumber.classList.add("text-xs");
 
-                    append(div, accountName);
-                    append(div, accountNumber);
-                    append(companyContainer, div);
-                    append(targetCompanyItem, companyContainer);
+                        accountName.innerHTML = data[index].name;
+                        accountNumber.innerHTML = "Account No: " + data[index].accountNumber;
 
-                    if (index === 5)
-                    {
-                        break; // Do not exceed 7 containers
+                        append(div, accountName);
+                        append(div, accountNumber);
+                        append(companyContainer, div);
+                        append(targetCompanyItem, companyContainer);
+
+                        if (index === 5) {
+                            break; // Do not exceed 7 containers
+                        }
                     }
                 }
+
+                showPage();
             }
         } catch (error) {
             console.error('Error loading transaction details:', error);
@@ -153,11 +207,23 @@ async function loadingDetailsOfTransactions() {
 }
 
 // Functionality for button back to transactions
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const backButton = document.getElementById('backToTransactionBtn');
     if (backButton) {
-        backButton.addEventListener('click', function() {
+        backButton.addEventListener('click', function () {
             window.location.href = 'transactionPage.html';
         });
     }
 });
+
+// Hides main content while API fetch completes, instead showing a loader
+function hidePage() {
+    document.getElementsByClassName("full")[0].style.visibility = 'hidden';
+    document.getElementsByClassName("loader")[0].style.visibility = 'visible';
+}
+
+// Shows main content (intended after fetch completes), and hides loader
+function showPage() {
+    document.getElementsByClassName("full")[0].style.visibility = 'visible';
+    document.getElementsByClassName("loader")[0].style.visibility = 'hidden';
+}

@@ -51,49 +51,65 @@ async function parseJSONObject(type) {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        if (data[0].timestamp === undefined)
+                        if (data[0] === undefined)
                             {
                                 resolve(data);
                                 return;
                             }
-                        let today = new Date().toISOString().slice(0, 10);
-                        for (var index in data) {
-                            var div = document.createElement("div");
-                            var anchor = document.createElement("a");
-                            var accountNameTo = document.createElement("p");
-                            var accountNumberTo = document.createElement("p");
-                            var date = document.createElement("p");
-                            var money = document.createElement("p");
-                            var transactionContainer = document.createElement("div");
-                            
-                            setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
-                            // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-                            anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
-                            accountNameTo.classList.add("font-medium");
-                            accountNumberTo.classList.add("text-xs");
-                            date.classList.add("text-xs");
-                            money.classList.add("ml-auto", "font-medium", "text-base")
+                        
+                        // Only create transaction items if valid transactions exist
+                        if (Object.getOwnPropertyNames(data[0]).includes('timestamp')) {
+                            sortTransactionsByDate(data);
+                            let today = new Date().toISOString().slice(0, 10);
+                            for (var index in data) {
+                                console.log(data[index]);
+                                var div = document.createElement("div");
+                                var anchor = document.createElement("a");
+                                var accountNameTo = document.createElement("p");
+                                var accountNumberTo = document.createElement("p");
+                                var date = document.createElement("p");
+                                var money = document.createElement("p");
+                                var transactionContainer = document.createElement("div");
+                                
+                                // Check if the transaction is made TO current account, thus a postive transaction
+                                if (data[index].name !== localStorage.getItem('name'))
+                                {
+                                    transactionContainer.classList.add("transaction", "bg-slate-200");
+                                    money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
+                                    money.innerHTML = "+£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                    anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data[index].accountNumberTo + "&id=" + data[index].transaction_id.$oid);
+                                } else {
+                                     setBackgroundColour(data[index].calculatedGreenScore, transactionContainer); 
+                                     money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
+                                     money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                     anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
+                                    }
 
-                            accountNameTo.innerHTML = data[index].recipientName;
-                            accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                            date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
-                            money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
+                                accountNameTo.classList.add("font-medium");
+                                accountNumberTo.classList.add("text-xs");
+                                date.classList.add("text-xs");
 
-                            append(div, accountNameTo);
-                            append(div, accountNumberTo);
-                            append(div, date);
-                            append(transactionContainer, div);
-                            append(transactionContainer, money);
-                            append(anchor, transactionContainer);
-                            append(targetAllTransactions, anchor);
+                                accountNameTo.innerHTML = data[index].recipientName;
+                                accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
+                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10));
 
-                            // If transaction was made today, append also to today's lists
-                            if (date.innerHTML === today)
-                            {
-                                let copy = document.createElement("div");
-                                copy.innerHTML = JSON.parse(JSON.stringify(anchor.innerHTML));
-                                append(targetTodaysTransactions, copy);
-                            }   
+                                append(div, accountNameTo);
+                                append(div, accountNumberTo);
+                                append(div, date);
+                                append(transactionContainer, div);
+                                append(transactionContainer, money);
+                                append(anchor, transactionContainer);
+                                append(targetAllTransactions, anchor);
+
+                                // If transaction was made today, append also to today's lists
+                                if (date.innerHTML === today)
+                                {
+                                    let copy = document.createElement("div");
+                                    copy.innerHTML = JSON.parse(JSON.stringify(targetAllTransactions.innerHTML));
+                                    append(targetTodaysTransactions, copy);
+                                }   
+                            }
                         }
                         resolve(data);
                     })
@@ -125,17 +141,24 @@ function showMainPage() {
 
 async function refreshTransactionPage() {
     hideMainPage();
-    setTimeout(() => { showMainPage() }, 3500);
     const object = await parseJSONObject('Account')
     const transactionObject = await parseJSONObject('Transaction');
 
-    console.log(transactionObject[0]);
+    if ((object) && (transactionObject))
+    {
+        showMainPage()
+    }
     
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2); // Change balance within the document
 }
 
 function setBackgroundColour(rating, container) {
+    if (rating == 0)
+    {
+        container.classList.add("transaction", "bg-slate-200");
+        return;
+    }
     if (rating < 0.3) // Red
     {
         container.classList.add("transaction", "bg-red-200");
@@ -148,4 +171,14 @@ function setBackgroundColour(rating, container) {
     {
         container.classList.add("transaction", "bg-green-200");
     }
+}
+
+// Order by their date. For some reason this won't work in the Lambda function correctly, but it does so here...
+function sortTransactionsByDate(transactions) {
+    transactions.sort((a, b) => {
+        const dateA = new Date(a.timestamp.$date);
+        const dateB = new Date(b.timestamp.$date);
+
+        return dateB - dateA;
+    });
 }

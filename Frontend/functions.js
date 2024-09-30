@@ -34,6 +34,8 @@ async function parseJSONObject(type) {
                     .then((response) => response.json())
                     .then((data) => {
                         userObject = data[0];
+                        localStorage.setItem("accountNumber", userObject.accountNumber);
+                        localStorage.setItem("name", userObject.name);
                         resolve(userObject);
                     })
             })
@@ -48,47 +50,58 @@ async function parseJSONObject(type) {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        console.log(data[0]);
-                        if (data[0].timestamp === undefined)
+                        if (data[0] === undefined)
                         {
                             resolve(data);
                             return;
                         }
 
-                        for (var index in data) {
-                            var div = document.createElement("div");
-                            var anchor = document.createElement("a");
-                            var accountNameTo = document.createElement("p");
-                            var accountNumberTo = document.createElement("p");
-                            var date = document.createElement("p");
-                            var money = document.createElement("p");
-                            var transactionContainer = document.createElement("div");
+                        // Only create transaction items if valid transactions exist
+                        if (Object.getOwnPropertyNames(data[0]).includes('timestamp'))
+                        {
+                            sortTransactionsByDate(data);
+                            for (var index in data) {
+                                var div = document.createElement("div");
+                                var anchor = document.createElement("a");
+                                var accountNameTo = document.createElement("p");
+                                var accountNumberTo = document.createElement("p");
+                                var date = document.createElement("p");
+                                var money = document.createElement("p");
+                                var transactionContainer = document.createElement("div");
 
-                            setBackgroundColour(data[index].calculatedGreenScore, transactionContainer);
-
-                            anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data[index].transaction_id.$oid);
-                            transactionContainer.classList.add("transaction", "bg-green-200");
-                            accountNameTo.classList.add("font-medium");
-                            accountNumberTo.classList.add("text-xs");
-                            date.classList.add("text-xs");
-                            money.classList.add("ml-auto", "font-medium", "text-base")
-
-                            accountNameTo.innerHTML = data[index].recipientName;
-                            accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                            date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
-                            money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
-
-                            append(div, accountNameTo);
-                            append(div, accountNumberTo);
-                            append(div, date);
-                            append(transactionContainer, div);
-                            append(transactionContainer, money);
-                            append(anchor, transactionContainer);
-                            append(targetTransactions, anchor);
-
-                            if (index === 7)
-                            {
-                                break; // Do not exceed 7 containers
+                                if (data[index].name !== localStorage.getItem('name'))
+                                    {
+                                        transactionContainer.classList.add("transaction", "bg-slate-200");
+                                        money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
+                                        money.innerHTML = "+£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                        anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data[index].accountNumberTo + "&id=" + data[index].transaction_id.$oid);
+                                    } else {
+                                         setBackgroundColour(data[index].calculatedGreenScore, transactionContainer); 
+                                         money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
+                                         money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
+                                         anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data[index].transaction_id.$oid);
+                                        }
+    
+                                accountNameTo.classList.add("font-medium");
+                                accountNumberTo.classList.add("text-xs");
+                                date.classList.add("text-xs");
+    
+                                accountNameTo.innerHTML = data[index].recipientName;
+                                accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
+                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
+    
+                                append(div, accountNameTo);
+                                append(div, accountNumberTo);
+                                append(div, date);
+                                append(transactionContainer, div);
+                                append(transactionContainer, money);
+                                append(anchor, transactionContainer);
+                                append(targetTransactions, anchor);
+    
+                                if (index == 4)
+                                {
+                                    break; // Do not exceed 5 containers
+                                }
                             }
                         }
                         resolve(data);
@@ -101,6 +114,11 @@ async function parseJSONObject(type) {
 }
 
 function setBackgroundColour(rating, container) {
+    if (rating == 0)
+    {
+        container.classList.add("transaction", "bg-slate-200");
+        return;
+    }
     if (rating < 0.3) // Red
     {
         container.classList.add("transaction", "bg-red-200");
@@ -167,9 +185,13 @@ function showMainHomePage() {
 // Show loading page for 2 seconds before displaying actual page.
 async function refreshHomePage() {
     hideMainHomePage();
-    setTimeout(() => { showMainHomePage() }, 2300);
     const object = await parseJSONObject('Account')
     const transactions = await parseJSONObject('Transaction')
+
+    if ((object) && (transactions))
+    {
+        showMainHomePage()
+    }
 
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
@@ -193,4 +215,14 @@ async function refreshHomePage() {
         document.getElementsByClassName("nextLevel")[0].innerText = "Level " + (values[0] + 1);
         targetPointsRemaining[0].innerText = Math.round(values[1]);
     }
+}
+
+// Order by their date. For some reason this won't work in the Lambda function correctly, but it does so here...
+function sortTransactionsByDate(transactions) {
+    transactions.sort((a, b) => {
+        const dateA = new Date(a.timestamp.$date);
+        const dateB = new Date(b.timestamp.$date);
+
+        return dateB - dateA;
+    });
 }
