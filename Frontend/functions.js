@@ -191,6 +191,27 @@ async function refreshHomePage() {
     if ((object) && (transactions))
     {
         showMainHomePage()
+
+        /* WEBSOCKETS */
+
+        // When page is fully loaded, initiate websocket
+        const socket = new WebSocket('wss://x3em5ryqid.execute-api.eu-west-1.amazonaws.com/production/');
+
+        socket.onopen = function () {
+            console.log('Listening for new transactions...');
+        };
+
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            console.log('New transaction received:', data[0]);
+            // Update the frontend (home page and transaction page)
+        };
+
+        socket.onclose = function () {
+            console.log('WebSocket disconnected.');
+        };
+
+        /* WEBSOCKETS END */
     }
 
     targetName[0].innerText = object.name; // Change name within the document

@@ -147,7 +147,31 @@ async function refreshTransactionPage() {
 
     if ((object) && (transactionObject))
     {
-        showMainPage()
+        showMainPage();
+
+        /* WEBSOCKETS */
+
+        // When page is fully loaded, initiate websocket
+        const socket = new WebSocket('wss://x3em5ryqid.execute-api.eu-west-1.amazonaws.com/production/');
+
+        socket.onopen = function () {
+            console.log('Listening for new transactions...');
+        };
+
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            console.log('New transaction received:', data[0]);
+            // Update the frontend (home page and transaction page)
+
+            // This will need to then update the actual account documents, and create a new
+            // transaction object in the frontend.
+        };
+
+        socket.onclose = function () {
+            console.log('WebSocket disconnected.');
+        };
+
+        /* WEBSOCKETS END */
     }
     
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
