@@ -79,7 +79,7 @@ async function parseJSONObject(type) {
     }
 }
 
-function addTransactionToList(data, isNew) {
+function addTransactionToList(data, isNew) { //TODO: date and name either added to websocket data or get from lambda call
     var div = document.createElement("div");
     var anchor = document.createElement("a");
     var accountNameTo = document.createElement("p");
@@ -88,6 +88,12 @@ function addTransactionToList(data, isNew) {
     var money = document.createElement("p");
     var transactionContainer = document.createElement("div");
     transactionContainer.classList.add('animate-slide-down');
+
+    if(isNew) {
+        data.transaction_id = data._id; //if data is from websocket, renames fields to match
+        data.accountNumberTo = data.accountTo;
+        data.recipientName = "testname";
+    }
     
     if (data.name !== localStorage.getItem('name')) {
         transactionContainer.classList.add("transaction", "bg-slate-200");
@@ -107,7 +113,7 @@ function addTransactionToList(data, isNew) {
 
     accountNameTo.innerHTML = data.recipientName;
     accountNumberTo.innerHTML = "Account No: " + data.accountNumberTo;
-    date.innerHTML = (data.timestamp.$date.substring(0, 10))
+    //date.innerHTML = (data.timestamp.$date.substring(0, 10))
     
     append(div, accountNameTo);
     append(div, accountNumberTo);
@@ -213,9 +219,9 @@ async function refreshHomePage() {
         };
 
         socket.onmessage = function (event) {
-            const socketData = JSON.parse(event.socketData);
-            console.log('New transaction received:', socketData[0]);
-            // Update the frontend (home page and transaction page)
+            const data = JSON.parse(event.data);
+            console.log('New transaction received:', data[0]);
+            addTransactionToList(data[0], true);
         };
 
         socket.onclose = function () {
