@@ -213,8 +213,8 @@ async function refreshHomePage() {
         };
 
         socket.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            console.log('New transaction received:', data[0]);
+            const socketData = JSON.parse(event.socketData);
+            console.log('New transaction received:', socketData[0]);
             // Update the frontend (home page and transaction page)
         };
 
