@@ -29,7 +29,7 @@ body {
 }
 
 .tab {
-    @apply border border-primary text-primary bg-white p-2 text-center w-full;
+    @apply border border-primary text-primary bg-white p-2 text-center w-full !cursor-pointer;
 }
 .tab.active {
     @apply bg-primary text-white;

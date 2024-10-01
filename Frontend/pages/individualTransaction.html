@@ -17,6 +17,12 @@
             padding: 20px;
         }
 
+        @media (min-width:1024px){
+            .containerForTransactionList {
+                max-width: 75%;
+            }
+        }
+
         .sectionforTransactions {
             max-height: 250px;
             overflow-y: auto;
@@ -110,7 +116,7 @@
 
     <div class="full">
         <div class="bg-primary text-white pt-12 pb-24 border-b border-black">
-            <div class="container grid grid-cols-2 items-center">
+            <div class="container grid grid-cols-2 items-center lg:w-1/2 lg:mx-auto">
                 <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><svg xmlns="http://www.w3.org/2000/svg"
                         height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                         <path
@@ -118,7 +124,7 @@
                     </svg>Home
                 </h2>
                 <div class="">
-                    <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
+                    <div class="bg-[#EBEBEB] text-center py-2 rounded-lg lg:w-max lg:px-4 lg:ml-auto">
                         <p class="text-xs text-black accountNumber">...</p>
                     </div>
                 </div>
@@ -130,7 +136,7 @@
 
 
         <div class="containerForTransactionList">
-            <div class="flex items-center mb-10 mt-1">
+            <div class="flex items-center mb-10 mt-1 lg:w-1/2 lg:mx-auto lg:mt-16">
                 <div class="-mt-7 shadow-lg rounded-bl-lg rounded-br-lg">
                     <div class="mt-8 mx-5 ">
                         <div class="sectionforDetails">
@@ -197,12 +203,7 @@
 
                                     <div>
                                         <button id="backToTransactionBtn"
-                                            class="btn bg-primary text-white rounded-md !py-1.5 w-full flex gap-x-1.5 items-center justify-center mt-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                                viewBox="0 -960 960 960" width="24px" fill="currentColor">
-                                                <path
-                                                    d="m140-220-60-60 300-300 160 160 284-320 56 56-340 384-160-160-240 240Z" />
-                                            </svg>
+                                            class="btn bg-primary text-white rounded-md !py-1.5 w-full flex gap-x-1.5 items-center justify-center mt-1 lg:mt-8 lg:mb-4">
                                             Back To All Transactions
                                         </button>
                                     </div>
