@@ -61,43 +61,9 @@ async function parseJSONObject(type) {
                         {
                             sortTransactionsByDate(data);
                             for (var index in data) {
-                                var div = document.createElement("div");
-                                var anchor = document.createElement("a");
-                                var accountNameTo = document.createElement("p");
-                                var accountNumberTo = document.createElement("p");
-                                var date = document.createElement("p");
-                                var money = document.createElement("p");
-                                var transactionContainer = document.createElement("div");
 
-                                if (data[index].name !== localStorage.getItem('name'))
-                                    {
-                                        transactionContainer.classList.add("transaction", "bg-slate-200");
-                                        money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
-                                        money.innerHTML = "+£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
-                                        anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data[index].accountNumberTo + "&id=" + data[index].transaction_id.$oid);
-                                    } else {
-                                         setBackgroundColour(data[index].calculatedGreenScore, transactionContainer); 
-                                         money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
-                                         money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
-                                         anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data[index].transaction_id.$oid);
-                                        }
-    
-                                accountNameTo.classList.add("font-medium");
-                                accountNumberTo.classList.add("text-xs");
-                                date.classList.add("text-xs");
-    
-                                accountNameTo.innerHTML = data[index].recipientName;
-                                accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10))
-    
-                                append(div, accountNameTo);
-                                append(div, accountNumberTo);
-                                append(div, date);
-                                append(transactionContainer, div);
-                                append(transactionContainer, money);
-                                append(anchor, transactionContainer);
-                                append(targetTransactions, anchor);
-    
+                                addTransactionToList(data[index], false); //add transaction to list on homepage
+
                                 if (index == 4)
                                 {
                                     break; // Do not exceed 5 containers
@@ -110,6 +76,51 @@ async function parseJSONObject(type) {
             break;
         default:
             return false;
+    }
+}
+
+function addTransactionToList(data, isNew) {
+    var div = document.createElement("div");
+    var anchor = document.createElement("a");
+    var accountNameTo = document.createElement("p");
+    var accountNumberTo = document.createElement("p");
+    var date = document.createElement("p");
+    var money = document.createElement("p");
+    var transactionContainer = document.createElement("div");
+    transactionContainer.classList.add('animate-slide-down');
+    
+    if (data.name !== localStorage.getItem('name')) {
+        transactionContainer.classList.add("transaction", "bg-slate-200");
+        money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
+        money.innerHTML = "+£" + (Math.round((data.moneyTransferred) * 100) / 100).toFixed(2);
+        anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data.accountNumberTo + "&id=" + data.transaction_id.$oid);
+    } else {
+        setBackgroundColour(data.calculatedGreenScore, transactionContainer); 
+        money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
+        money.innerHTML = "-£" + (Math.round((data.moneyTransferred) * 100) / 100).toFixed(2);
+        anchor.setAttribute('href', "individualTransaction.html" + extension + "&id=" + data.transaction_id.$oid);
+    }
+
+    accountNameTo.classList.add("font-medium");
+    accountNumberTo.classList.add("text-xs");
+    date.classList.add("text-xs");
+
+    accountNameTo.innerHTML = data.recipientName;
+    accountNumberTo.innerHTML = "Account No: " + data.accountNumberTo;
+    date.innerHTML = (data.timestamp.$date.substring(0, 10))
+    
+    append(div, accountNameTo);
+    append(div, accountNumberTo);
+    append(div, date);
+    append(transactionContainer, div);
+    append(transactionContainer, money);
+    append(anchor, transactionContainer);
+    if(isNew) {
+        targetTransactions.prepend(anchor);
+        targetTransactions.removeChild(targetTransactions.lastChild);
+    }
+    else {
+        append(targetTransactions, anchor);
     }
 }
 
