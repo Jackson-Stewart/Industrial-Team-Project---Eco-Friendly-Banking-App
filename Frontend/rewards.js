@@ -133,7 +133,7 @@ async function parseJSONObject(type) {
                         // Append the path to the SVG
                         svg2.appendChild(path2);
         
-                        div.classList.add('bg-white', 'flex', 'relative', 'shadow-md', 'border', 'border-gray-300', 'relative', 'py-4', 'px-4', 'mt-2');
+                        div.classList.add('reward');
                         nameDiv.classList.add('flex', 'items-center');
                         rewardName.classList.add('text-primary');
                         points.classList.add('absolute', 'text-primary', 'right-4', 'bottom-2', 'text-xs');
