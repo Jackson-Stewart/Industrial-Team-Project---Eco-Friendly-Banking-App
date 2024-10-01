@@ -7,56 +7,116 @@
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Greenlevel</title>
+    <title>Eco-Bank | Your Green Level</title>
+    <link rel="icon" type="image/x-icon" href="../logo.png">
+    <style>
+        .loader {
+            text-align: center;
+        }
+
+        .gfg {
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            left: calc(50% - 1em);
+            border-radius: 1em;
+            transform-origin: 1em 2em;
+            animation: rotate;
+            animation-iteration-count: infinite;
+            animation-duration: 1.8s;
+        }
+
+        /* Rotation of loader dots */
+        @keyframes rotate {
+            from {
+                transform: rotateZ(0deg);
+            }
+
+            to {
+                transform: rotateZ(360deg);
+            }
+        }
+
+        .g1 {
+            animation-delay: 0.1s;
+            background-color: #13274F;
+
+        }
+
+        .g2 {
+            animation-delay: 0.2s;
+            background-color: #0066b2;
+        }
+
+        .g3 {
+            animation-delay: 0.3s;
+            background-color: #6CB4EE;
+        }
+
+        .g4 {
+            animation-delay: 0.4s;
+            background-color: #89CFF0;
+        }
+
+        .g5 {
+            animation-delay: 0.5s;
+            background-color: #F0F8FF;
+        }
+
+    </style>
 </head>
 
-<div class="full">
-    <div class="bg-primary text-white pt-12 pb-24 border-b border-black">
-        <div class="containerForTransactionList">
-            <div class="grid grid-cols-2 items-center ml-4">
-                <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><span class="material-symbols-outlined">
-                    stacked_line_chart
-                    </span>Green Level
-                </h2>
-                <div class="container">
-                    <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
-                        <p class="text-xs text-black accountNumber">...</p>
+<body>
+    <div class='loader'>
+        <div class='gfg g1'></div>
+        <div class='gfg g2'></div>
+        <div class='gfg g3'></div>
+        <div class='gfg g4'></div>
+        <div class='gfg g5'></div>
+    </div>
+    
+    <div class="full">
+        <div class="bg-primary text-white py-12 border-b border-black">
+            <div class="containerForTransactionList lg:w-1/2 lg:mx-auto">
+                <div class="grid grid-cols-2 items-center ml-4">
+                    <h2 class="font-semibold text-2xl flex items-center gap-x-1.5"><span class="material-symbols-outlined">
+                        stacked_line_chart
+                        </span>Green Level
+                    </h2>
+                    <div class="container">
+                        <div class="bg-[#EBEBEB] text-center py-2 rounded-lg">
+                            <p class="text-xs text-black accountNumber">...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="container mt-8 lg:mx-auto lg:w-1/2">
+            <div class="rounded-lg">
+                <div>
+                    <a href="home.html" class="text-primary flex items-center hover:underline"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>Back</a>
+                </div>
+                <div class="py-4 bg-white rounded-lg h-[130px] mt-8 shadow-lg">
+                    <div class="mx-4">
+                        <div class="flex items-center mb-4">
+                            <h4 class="font-semibold text-lg">Current Green Level: <span class="currentLevel"></span></h4>
+                        </div>
+                        <div class="flex items-center gap-x-8 mx-4 mt-1 mb-4">
+                            <div class="bg-[#F5F5F5] w-full h-4 rounded-md border border-black">
+                                <div class="bg-green-400 h-full rounded-tl-md rounded-bl-md levelBar"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center ">
+                            <h4 class="text-lg">To reach level <span class="nextLevel font-semibold"></span> you need <span class="pointsRemainingToNextLevel font-semibold"></span> points</h4>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <div class="container">
-        <div class="-mt-20 shadow-lg rounded-lg">
-            <div>
-                <button onclick="window.location.href='home.html'" class="btn text-white bg-[#00a4d3] hover:bg-blue-800 !py-1.5 w-60 h-9 flex items-center mt-1 rounded-lg"> 
-                    <span class="material-symbols-outlined">home</span>
-                    Back to Home
-                </button>
-            </div>
-            <div class="py-4 bg-white rounded-lg h-[130px]">
-                <div class="mx-4">
-                    <div class="flex items-center mb-4">
-                        <h4 class="font-semibold text-lg">Current Greenlevel</h4>
-                        <h4 class="">...</h4>
-                    </div>
-                    <div class="flex items-center gap-x-8 mx-4 mt-1 mb-4">
-                        <div class="bg-[#F5F5F5] w-full h-4 rounded-md border border-black">
-                            <div class="bg-green-400 w-1/2 h-full rounded-tl-md rounded-bl-md"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center ">
-                        <h4 class="font-semibold text-lg">To Reach </h4>
-                        <h4 class="">...</h4>
-                        <h4 class="font-semibold text-lg">you need </h4>
-                        <h4 class="">...</h4>
-                        <h4 class="font-semibold text-lg">Point </h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+    <script type="module" src="../greenLevel.js"></script>
+</body>
 </html>

@@ -1,0 +1,20 @@
+Rewards Schema:
+
+- Provide functionality for redeeming rewards when the sufficient number of points are collected, and these points will come off the total of the user when spent.
+  £5 off next purchase
+  10% off next purchase
+  £20 off next purchase
+  25% off next purchase
+  £50 off next purchase
+
+-Consecutive green purchases result in a streak multiplier for green score points
+  3 consecutive green purchases in a row activates this 
+
+-Consecutive red purchases result in a penalty on green score points and rewards
+  2 consecutive red purchases in row 
+
+-Leaderboard prize for top ponts total
+
+Extras: 
+Rewards for specific spending categroies
+Admin page for admin to set own rewards and possibly challenges
