@@ -67,6 +67,24 @@ button.onclick = async function sendMoneyClick() {
 
     var greenscore = 0;
 
+    let reward = JSON.parse(localStorage.getItem('reward'));
+
+    if (reward && reward.redeemed){
+        if (reward.type == 'Percentage'){
+            var discount = parseInt(reward.name.split('%')[0].trim(), 10);
+            amountInput = amountInput.value * (1 - (discount / 100));
+        } else if (reward.type == 'Cash'){
+            var discount = parseInt(reward.name.split(' ')[0].replace('£', ''), 10);
+            amountInput = amountInput.value - discount;
+        }
+    } else {
+        amountInput = amountInput.value;
+    }
+
+    console.log('Reward details:');
+    console.log(discount);
+    console.log(amountInput);
+
     extension = "?accountNumber=" + recipientInput.value;
     const greenscoreObject = await parseJSONObject("GET", "accounts");
 
@@ -76,11 +94,11 @@ button.onclick = async function sendMoneyClick() {
 
     extension = "/"+localStorage.getItem("accountNumber")+"/"
                 + recipientInput.value +"/"
-                + amountInput.value +"/"
+                + amountInput +"/"
                 + greenscore +"/"
                 + referenceInput.value;
     const object = await parseJSONObject("POST", "transactions");
-    const updateScore = updateGreenScore(amountInput.value, localStorage.getItem("accountNumber"), greenscore)
+    const updateScore = updateGreenScore(amountInput, localStorage.getItem("accountNumber"), greenscore)
     // Upon returning to home page, do a delay on showing of green level to simulate analysis
     localStorage.setItem("delayShowingLevel", "True");
 
@@ -89,6 +107,7 @@ button.onclick = async function sendMoneyClick() {
         launchDialog(object.message, "wrongRecipient");
         return;
     }
+
     launchDialog("", "sentMoneySuccessful");
 }
 

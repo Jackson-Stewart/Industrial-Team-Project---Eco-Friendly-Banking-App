@@ -15,7 +15,7 @@ body {
 }
 
 .btn-primary {
-    @apply bg-primary text-white hover:bg-[#008FB8];
+    @apply bg-primary text-white hover:bg-[#008FB8] disabled:bg-neutral-400;
 }
 .btn-dark {
     @apply bg-primary-dark text-white hover:bg-[#0044ba];
