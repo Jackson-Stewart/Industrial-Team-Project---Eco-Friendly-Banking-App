@@ -92,7 +92,7 @@ function addTransactionToList(data, isNew) { //TODO: date and name either added 
     if(isNew) {
         data.transaction_id = data._id; //if data is from websocket, renames fields to match
         data.accountNumberTo = data.accountTo;
-        data.recipientName = "testname";
+        data.recipientName = data.accountFromName;
     }
     
     if (data.name !== localStorage.getItem('name')) {
@@ -221,7 +221,9 @@ async function refreshHomePage() {
         socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
             console.log('New transaction received:', data[0]);
-            addTransactionToList(data[0], true);
+            if(data[0].accountTo === localStorage["accountNumber"]) { //check transaction is being sent to this user
+                addTransactionToList(data[0], true);
+            }
         };
 
         socket.onclose = function () {
