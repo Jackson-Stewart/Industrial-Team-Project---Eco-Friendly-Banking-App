@@ -9,7 +9,9 @@ localStorage.setItem("accountNumber", "undefined");
 localStorage.setItem("name", "undefined");
 
 loginPageButton.addEventListener('click', function () {
-    localStorage
+    if(loginPageInput.value === "admin") {
+        window.location.href = "admin.html";
+    }
     localStorage["accountNumber"] = loginPageInput.value;
 
     checkAccountExists();
