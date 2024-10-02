@@ -98,7 +98,9 @@ button.onclick = async function sendMoneyClick() {
                 + greenscore +"/"
                 + referenceInput.value;
     const object = await parseJSONObject("POST", "transactions");
-    const updateScore = updateGreenScore(amountInput, localStorage.getItem("accountNumber"), greenscore)
+    const updateScore = updateGreenScore(amountInput, localStorage.getItem("accountNumber"), greenscore);
+    extension = "/"+localStorage.getItem("accountNumber");
+    const ob = parseJSONObject("POST", "checkStreak");
     // Upon returning to home page, do a delay on showing of green level to simulate analysis
     localStorage.setItem("delayShowingLevel", "True");
 
