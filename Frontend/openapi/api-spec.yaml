@@ -9,21 +9,12 @@ servers:
   - url: https://efnn495zpi.execute-api.us-east-1.amazonaws.com
 
 paths:
-  /api/{accountName}:
-    # Create a new account
-    post:
-      summary: Create a new account.
-      description: Create a new account with a specified name along with a randomly generated account number.
-      parameters:
-        - name: accountName
-          in: path
-          description: Account name to be registered.
-          required: true
-          schema:
-            type: string
+  /api/rewards:
+    get:
+      summary: Get all rewards.
       responses:
         "200":
-          description: Successful registration of account.
+          description: Successful.
         "400":
           description: Unsuccessful.
 
@@ -129,6 +120,25 @@ paths:
                     description: The spending category of the recipient. Only returned if recipient is a company. 
         "400":
           description: Unsuccessful.
+          
+  /api/{accountName}:
+    # Create a new account
+    post:
+      summary: Create a new account.
+      description: Create a new account with a specified name along with a randomly generated account number.
+      parameters:
+        - name: accountName
+          in: path
+          description: Account name to be registered.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful registration of account.
+        "400":
+          description: Unsuccessful.
+  
   /api/transactions/{accountNumber}/{accountNumberTo}/{amountOfMoney}/{calculatedGreenScore}/{reference}:
     post:
       summary: Create a new transaction.
@@ -164,14 +174,6 @@ paths:
           required: true
           schema:
             type: string
-      responses:
-        "200":
-          description: Successful.
-        "400":
-          description: Unsuccessful.
-  /api/rewards:
-    get:
-      summary: Get all rewards.
       responses:
         "200":
           description: Successful.
