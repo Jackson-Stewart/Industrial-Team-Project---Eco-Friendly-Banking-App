@@ -235,14 +235,33 @@ async function refreshHomePage() {
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
 
-    // Calculate current level and points remaining until next level
     let values = calculateLevel(object.currentGreenScore);
-    targetLevels[0].innerText = "Level " + values[0];
-    targetLevelBar[0].classList.add('w-['+values[2]+'%]')
-    // Change all the level elements
-    for (var i = 0; i < targetLevels.length; i++) {
-        targetLevels[i].innerText = "Level " + values[0];
+    
+    // If a transaction has just been made, make a delay to simulate analysis
+    if (localStorage.getItem("delayShowingLevel") === "True")
+    {
+        targetLevels[0].innerText = "Loading...";
+        targetLevelBar[0].classList.add('w-[0%]')
+
+        setTimeout(() => {
+            showLevelDetails(values);
+          }, "3000");
+
+        localStorage.setItem("delayShowingLevel", "False");
     }
+    else
+    {
+        // Calculate current level and points remaining until next level
+        showLevelDetails(values);
+    }
+}
+
+function showLevelDetails(values)
+{
+    targetLevels[0].classList.add('animate-slide-down');
+    targetLevels[0].innerText = "Level " + values[0];
+    targetLevelBar[0].classList.add('w-['+values[2]+'%]', 'animate-slide-down');
+    targetPointsRemaining[0].classList.add('animate-slide-down');
 
     if (values[0] == 10) {
         document.getElementsByClassName("nextLevel")[0].innerText = "";

@@ -37,6 +37,26 @@ async function parseJSONObject(type, callType) {
     })
 }
 
+// Update green score (separated from transaction)
+async function updateGreenScore(amount, accountNumberFrom, rag) {
+    // Call API, get requested content and change into JSON object
+    let userObject = '';
+    return new Promise((resolve, reject) => {
+        const apiUrl = url + "/api/updateGreenScore/" + amount + "/" + accountNumberFrom + "/" + rag;
+        console.log(apiUrl);
+        fetch(apiUrl, {
+            cache: 'no-cache',
+            method: 'POST',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Green score response: " + data[0]);
+                userObject = data;
+                resolve(userObject);
+            })
+    })
+}
+
 var button = document.getElementById("sendButton");
 button.onclick = async function sendMoneyClick() {
     hideMainHomePage();
@@ -60,6 +80,10 @@ button.onclick = async function sendMoneyClick() {
                 + greenscore +"/"
                 + referenceInput.value;
     const object = await parseJSONObject("POST", "transactions");
+    const updateScore = updateGreenScore(amountInput.value, localStorage.getItem("accountNumber"), greenscore)
+    // Upon returning to home page, do a delay on showing of green level to simulate analysis
+    localStorage.setItem("delayShowingLevel", "True");
+
     showMainHomePage();
     if(object !== null) {
         launchDialog(object.message, "wrongRecipient");
