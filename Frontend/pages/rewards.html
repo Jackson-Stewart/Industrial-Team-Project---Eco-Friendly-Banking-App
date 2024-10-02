@@ -169,7 +169,7 @@
 
 <!--     <script type="module" src="../functions.js"></script> -->
      <script>
-        //press the button and shows the dialog
+        const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
         
         function showDialog(rewardName, points)
         {
@@ -258,9 +258,19 @@
             redeem.classList.add('hidden');
             redeemed_text.classList.remove('hidden');
 
-
-
-            console.log(localStorage);
+            let userObject = '';
+            return new Promise((resolve, reject) => {
+                const apiUrl = url + '/api/updateLevel/' + localStorage.accountNumber + '/' + pointsCost;
+                fetch(apiUrl, {
+                    cache: 'no-cache',
+                    method: 'POST',
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    userObject = data;
+                    resolve(userObject);
+                })
+            })
         }
      </script>
 
