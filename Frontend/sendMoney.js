@@ -107,7 +107,7 @@ button.onclick = async function sendMoneyClick() {
         launchDialog(object.message, "wrongRecipient");
         return;
     }
-
+    localStorage.removeItem('reward');
     launchDialog("", "sentMoneySuccessful");
 }
 
