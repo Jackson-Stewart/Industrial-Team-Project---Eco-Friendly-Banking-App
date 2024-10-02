@@ -1,0 +1,228 @@
+# For generating the OpenAPI documentation for our current working API.
+
+openapi: 3.0.0
+info:
+  title: EcoBank API
+  version: 1.0.0
+
+servers:
+  - url: https://efnn495zpi.execute-api.us-east-1.amazonaws.com
+
+paths:
+  /api/{accountName}:
+    # Create a new account
+    post:
+      summary: Create a new account.
+      description: Create a new account with a specified name along with a randomly generated account number.
+      parameters:
+        - name: accountName
+          in: path
+          description: Account name to be registered.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful registration of account.
+        "400":
+          description: Unsuccessful.
+
+  /api/accounts:
+    # Get all accounts
+    get:
+      summary: Returns all accounts.
+      description: Returns a list of accounts and account details.
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the account.
+                  spendingcategory:
+                    type: string
+                    description: The category of items that the company is concerned with, eg. fuel. Field only returned with company accounts.
+                  carbonEmissionRating:
+                    type: integer
+                    description: The carbon emissions rating of the company. Field only returned with company accounts.
+                  wasteManagementRating:
+                    type: integer
+                    description: The waste management rating of the company. Field only returned with company accounts.
+                  sustainabilityPracticesRating:
+                    type: integer
+                    description: The sustainability practices rating of the company. Field only returned with company accounts.
+                  accountNumber:
+                    type: string
+                    description: Associated account number for specified account.
+                  summary:
+                    type: string
+                    description: A brief summary of the company. Field only returns with company accounts.
+                  amountOfMoney:
+                    type: number
+                    description: Amount of money in the specified account.
+                  rag:
+                    type: number
+                    description: Associated RAG rating for the company based on ratings for carbon emissions, waste management and sustainability practices. Field only returned with company accounts.
+                  currentGreenScore:
+                    type: number
+                    description: Current number of points in terms of green scoring. Field only returned with ordinary user accounts.
+                  currentStreak:
+                    type: integer
+                    description: Current streak multiplier. Field only returned with ordinary user accounts.
+        "400":
+          description: Unsuccessful.
+  /api/transactions:
+    get:
+      summary: Gets transactions from a specified account number.
+      description: Returns all transactions for a specified account number. If you want a specific transaction for that account, additionally pass in an 'id' query string.
+      parameters:
+        - name: accountNumber
+          in: query
+          description: Account number to check.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: Unique transaction ID to check against.
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the account from where the transaction was made.
+                  accountNumber: 
+                    type: string
+                    description: Account number of where the transaction was made.
+                  transaction_id:
+                    type: string
+                    description: Unique ID of the transaction.
+                  accountNumberTo:
+                    type: string
+                    description: Account number of target recipient of the transaction.
+                  timestamp:
+                    type: string
+                    description: IOS 8601 formatted timestamp of when the transaction was made.
+                  moneyTransferred:
+                    type: number
+                    description: The amount of money involved.
+                  calculatedGreenScore:
+                    type: number
+                    description: The associated RAG rating of the recipient. This is set to 0 for ordinary user accounts.
+                  recipientName:
+                    type: string
+                    description: The name of the recipient.
+                  spendingCategory:
+                    type: string
+                    description: The spending category of the recipient. Only returned if recipient is a company. 
+        "400":
+          description: Unsuccessful.
+  /api/transactions/{accountNumber}/{accountNumberTo}/{amountOfMoney}/{calculatedGreenScore}/{reference}:
+    post:
+      summary: Create a new transaction.
+      description: Create a new transaction along with required details.
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account number from where the transaction is being made.
+          required: true
+          schema:
+            type: string
+        - name: accountNumberTo
+          in: path
+          description: Account number of the recipient.
+          required: true
+          schema:
+            type: string
+        - name: amountOfMoney
+          in: path
+          description: Amount of money to be sent.
+          required: true
+          schema:
+            type: string
+        - name: calculatedGreenScore
+          in: path
+          description: The green score of the recipient.
+          required: true
+          schema:
+            type: string
+        - name: reference
+          in: path
+          description: The reference for the transaction.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful.
+        "400":
+          description: Unsuccessful.
+  /api/rewards:
+    get:
+      summary: Get all rewards.
+      responses:
+        "200":
+          description: Successful.
+        "400":
+          description: Unsuccessful.
+          
+  /api/updateLevel/{accountNumber}/{points}:
+    post:
+      summary: Update a user's current number of points for levelling.
+      description: Either increment or decrement a specific user's current number of points. This is automatically set to decrement the number of points if passing in an integer above 0. To increment, add a minus in front of the integer (a little counter-intuitive, I know).
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account number of the user for which the points will be adjusted.
+          required: true
+          schema:
+            type: string
+        - name: points
+          in: path
+          description: Amount of points to be adjusted by.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful.
+        "400":
+          description: Unsuccessful.
+  /api/checkStreak/{accountNumber}:
+    post:
+      summary: Checks the current streak, and either increments the streak value or pushes a penalty to the user.
+      description: This will check the past two transactions for a given user - if they were both green purchases (RAG > 0.7), then the streak is incremented. If both were red (RAG < 0.3), then the user is punished by removing 100 points off their score (or set to 0 if it ends up being negative).
+      parameters:
+        - name: accountNumber
+          in: path
+          description: Account number of the user for which the points will be adjusted.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful.
+          content:
+            text/plain:
+              schema:
+                type: boolean
+                properties:
+                  name:
+                    type: boolean
+                    description: Returns true if a streak has been incremented, else false.
+        "400":
+          description: Unsuccessful.
+
+
