@@ -294,6 +294,7 @@ function sortTransactionsByDate(transactions) {
 // Update streak number
 function updateStreak(value) {
     targetStreakNumber[0].innerText = value;
+    console.log("Value from API: " + value);
 
     if (localStorage.getItem("delayShowingLevel") === "True")
     {
@@ -303,13 +304,14 @@ function updateStreak(value) {
             targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-green-700");
             targetStreakUpdate[0].innerText = "+1"
 
-            // If checkGreenStreak is false and value is not 0        
+        // Negative points  
         } else if (localStorage.getItem("checkStreakGreen") === "-1") {
             console.log("Penalty");
             targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-red-700");
             targetStreakUpdate[0].innerText = "-100 points"
         
-        } else if (localStorage.getItem("checkStreakGreen") === "false" && localStorage['streak'] !== 0) {
+        // If checkGreenStreak is false and value is not 0 
+        } else if (localStorage.getItem("checkStreakGreen") === "false" && localStorage['streak'] !== "0") {
             console.log("Streak reset");
             targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-red-700");
             targetStreakUpdate[0].innerText = "Reset"
