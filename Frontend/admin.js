@@ -7,5 +7,5 @@ submit.addEventListener('click', function () {
     localStorage.setItem("description", description.value);
 	localStorage.setItem("discountAmount", discountAmount.value);
 	localStorage.setItem("costOfPoints", costOfPoints.value);
-	window.location.href = "rewards.html";
+	window.location.href = "login.html";
 });
