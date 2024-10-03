@@ -5,7 +5,6 @@ var submit = document.getElementById("submit");
 
 localStorage.setItem("newReward", false);
 
-submit.addEventListener('click', function () {
     localStorage.setItem("description", description.value);
 	localStorage.setItem("discountAmount", discountAmount.value);
 	localStorage.setItem("costOfPoints", costOfPoints.value);
@@ -15,6 +14,7 @@ submit.addEventListener('click', function () {
 	{
 		localStorage.setItem("newReward", true);
 	}
-	
+
+submit.addEventListener('click', function () {
 	window.location.href = "login.html";
 });
