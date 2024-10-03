@@ -12,6 +12,22 @@
     <link rel="icon" type="image/x-icon" href="../logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @keyframes slide-down {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-down {
+            animation: slide-down 0.5s ease-in-out;
+        }
+        
         .containerForTransactionList {
             max-width: 850px;
             margin: 0 auto;

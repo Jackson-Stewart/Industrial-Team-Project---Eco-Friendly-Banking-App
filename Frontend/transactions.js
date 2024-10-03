@@ -107,18 +107,25 @@ function addTransactionToList(data, isNew) { //TODO: date and name either added 
 
     accountNameTo.innerHTML = data.recipientName;
     accountNumberTo.innerHTML = "Account No: " + data.accountNumberTo;
-    if(!isNew) {
-        date.innerHTML = (data.timestamp.$date.substring(0, 10));
-    }
     append(div, accountNameTo);
     append(div, accountNumberTo);
     append(div, date);
+    let today = new Date().toISOString().slice(0, 10);
+    if (!isNew) { date.innerHTML = (data.timestamp.$date.substring(0, 10)); }
+    else { date.innerHTML = today; }
+    console.log(data);
+    // If transaction was made today, append also to today's lists
+    if (date.innerHTML === today)
+        {
+            var span = document.createElement("div");
+            span.innerHTML = '<span class="mt-1 bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:dark:text-blue-800 border border-blue-400"><svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/></svg>Made Today</span>';
+            append(div, span);
+        } 
     append(transactionContainer, div);
     append(transactionContainer, money);
     append(anchor, transactionContainer);
     if(isNew) {
         targetAllTransactions.prepend(anchor);
-        targetAllTransactions.removeChild(targetAllTransactions.lastChild);
     }
     else {
         append(anchor, transactionContainer);
@@ -167,6 +174,10 @@ async function refreshTransactionPage() {
             const data = JSON.parse(event.data);
             console.log('New transaction received:', data[0]);
             if(data[0].accountTo === localStorage["accountNumber"]) { //check transaction is being sent to this user
+                var currentBalance = parseFloat(targetBalance[0].innerText.substring(1));
+                console.log(currentBalance);
+                console.log(data[0].moneyTransferred);
+                targetBalance[0].innerText = "£" + (currentBalance + data[0].moneyTransferred).toFixed(2);
                 addTransactionToList(data[0], true); //TODO finish this
             }
         };
