@@ -113,8 +113,9 @@ function addTransactionToList(data, isNew) { //TODO: date and name either added 
 
     accountNameTo.innerHTML = data.recipientName;
     accountNumberTo.innerHTML = "Account No: " + data.accountNumberTo;
-    //date.innerHTML = (data.timestamp.$date.substring(0, 10))
-    
+    if(!isNew) {
+        date.innerHTML = (data.timestamp.$date.substring(0, 10));
+    }
     append(div, accountNameTo);
     append(div, accountNumberTo);
     append(div, date);

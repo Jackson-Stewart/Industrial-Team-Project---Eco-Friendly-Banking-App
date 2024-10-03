@@ -61,55 +61,7 @@ async function parseJSONObject(type) {
                             sortTransactionsByDate(data);
                             let today = new Date().toISOString().slice(0, 10);
                             for (var index in data) {
-                                var div = document.createElement("div");
-                                var anchor = document.createElement("a");
-                                var accountNameTo = document.createElement("p");
-                                var accountNumberTo = document.createElement("p");
-                                var date = document.createElement("p");
-                                var money = document.createElement("p");
-                                var transactionContainer = document.createElement("div");
-                                
-                                // Check if the transaction is made TO current account, thus a postive transaction
-                                if (data[index].name !== localStorage.getItem('name'))
-                                {
-                                    transactionContainer.classList.add("transaction", "bg-slate-200");
-                                    money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
-                                    money.innerHTML = "+£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
-                                    anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data[index].accountNumberTo + "&id=" + data[index].transaction_id.$oid);
-                                } else {
-                                     setBackgroundColour(data[index].calculatedGreenScore, transactionContainer); 
-                                     money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
-                                     money.innerHTML = "-£" + (Math.round((data[index].moneyTransferred) * 100) / 100).toFixed(2);
-                                     anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data[index].transaction_id.$oid);
-                                    }
-
-                                // <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-                                accountNameTo.classList.add("font-medium");
-                                accountNumberTo.classList.add("text-xs");
-                                date.classList.add("text-xs");
-
-                                accountNameTo.innerHTML = data[index].recipientName;
-                                accountNumberTo.innerHTML = "Account No: " + data[index].accountNumberTo;
-                                date.innerHTML = (data[index].timestamp.$date.substring(0, 10));  
-
-                                append(div, accountNameTo);
-                                append(div, accountNumberTo);
-                                append(div, date);
-                                append(transactionContainer, div);
-                                append(transactionContainer, money);
-
-                                // If transaction was made today, append also to today's lists
-                                if (date.innerHTML === today)
-                                    {
-                                        var span = document.createElement("div");
-                                        span.innerHTML = '<span class="mt-1 bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:dark:text-blue-800 border border-blue-400"><svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/></svg>Made Today</span>';
-                                        append(div, span);
-                                    } 
-
-                                append(anchor, transactionContainer);
-                                append(targetAllTransactions, anchor);
-
-                                
+                                addTransactionToList(data[index], false);
                             }
                         }
                         resolve(data);
@@ -118,6 +70,59 @@ async function parseJSONObject(type) {
             break;
         default:
             return false;
+    }
+}
+
+function addTransactionToList(data, isNew) { //TODO: date and name either added to websocket data or get from lambda call
+    var div = document.createElement("div");
+    var anchor = document.createElement("a");
+    var accountNameTo = document.createElement("p");
+    var accountNumberTo = document.createElement("p");
+    var date = document.createElement("p");
+    var money = document.createElement("p");
+    var transactionContainer = document.createElement("div");
+    transactionContainer.classList.add('animate-slide-down');
+
+    if(isNew) {
+        data.transaction_id = data._id; //if data is from websocket, renames fields to match
+        data.accountNumberTo = data.accountTo;
+        data.recipientName = data.accountFromName;
+    }
+    
+    if (data.name !== localStorage.getItem('name')) {
+        transactionContainer.classList.add("transaction", "bg-slate-200");
+        money.classList.add("ml-auto", "font-medium", "text-base", "text-green-700");
+        money.innerHTML = "+£" + (Math.round((data.moneyTransferred) * 100) / 100).toFixed(2);
+        anchor.setAttribute('href', "individualTransaction.html?accountNumber=" + data.accountNumberTo + "&id=" + data.transaction_id.$oid);
+    } else {
+        setBackgroundColour(data.calculatedGreenScore, transactionContainer); 
+        money.classList.add("ml-auto", "font-medium", "text-base", "text-red-700");
+        money.innerHTML = "-£" + (Math.round((data.moneyTransferred) * 100) / 100).toFixed(2);
+        anchor.setAttribute('href', "individualTransaction.html" + getExtension + "&id=" + data.transaction_id.$oid);
+    }
+
+    accountNameTo.classList.add("font-medium");
+    accountNumberTo.classList.add("text-xs");
+    date.classList.add("text-xs");
+
+    accountNameTo.innerHTML = data.recipientName;
+    accountNumberTo.innerHTML = "Account No: " + data.accountNumberTo;
+    if(!isNew) {
+        date.innerHTML = (data.timestamp.$date.substring(0, 10));
+    }
+    append(div, accountNameTo);
+    append(div, accountNumberTo);
+    append(div, date);
+    append(transactionContainer, div);
+    append(transactionContainer, money);
+    append(anchor, transactionContainer);
+    if(isNew) {
+        targetAllTransactions.prepend(anchor);
+        targetAllTransactions.removeChild(targetAllTransactions.lastChild);
+    }
+    else {
+        append(anchor, transactionContainer);
+        append(targetAllTransactions, anchor);
     }
 }
 
@@ -161,10 +166,9 @@ async function refreshTransactionPage() {
         socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
             console.log('New transaction received:', data[0]);
-            // Update the frontend (home page and transaction page)
-
-            // This will need to then update the actual account documents, and create a new
-            // transaction object in the frontend.
+            if(data[0].accountTo === localStorage["accountNumber"]) { //check transaction is being sent to this user
+                addTransactionToList(data[0], true); //TODO finish this
+            }
         };
 
         socket.onclose = function () {
