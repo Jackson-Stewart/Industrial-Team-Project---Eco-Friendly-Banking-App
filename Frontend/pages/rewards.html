@@ -171,19 +171,6 @@
      <script>
         const url = "https://efnn495zpi.execute-api.us-east-1.amazonaws.com";
 
-         //Passing the input values to a local storage once the admin click submit
-        var description = document.getElementById("description");
-        var discountAmount = document.getElementById("discountAmount");
-        var costOfPoints = document.getElementById("costOfPoints");
-
-
-        submit.addEventListener('click', function() {
-        	localStorage.setItem("description", description.value);
-        	localStorage.setItem("discountAmount", discountAmount.value);
-        	localStorage.setItem("costOfPoints", costOfPoints.value);
-        	window.location.href = "rewards.html";
-    });
-            
         function showDialog(rewardName, points)
         {
             const dialog = document.getElementById('dialog');
