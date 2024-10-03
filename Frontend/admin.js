@@ -11,7 +11,7 @@ submit.addEventListener('click', function () {
 	localStorage.setItem("costOfPoints", costOfPoints.value);
 
 	//If the fields have been filled
-	if (description.value.length != 0 && discountAmount.value.length != 0 && costOfPoints.value.length != 0
+	if (description.value.length != 0 && discountAmount.value.length != 0 && costOfPoints.value.length != 0)
 	{
 		localStorage.setItem("newReward", true);
 	}
