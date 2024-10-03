@@ -3,8 +3,9 @@ var discountAmount = document.getElementById("discountAmount");
 var costOfPoints = document.getElementById("costOfPoints");
 var submit = document.getElementById("submit");
 
-localStorage.setItem("newReward", false);
+localStorage.setItem("newReward", "false");
 
+submit.addEventListener('click', function () {
     localStorage.setItem("description", description.value);
 	localStorage.setItem("discountAmount", discountAmount.value);
 	localStorage.setItem("costOfPoints", costOfPoints.value);
@@ -12,9 +13,8 @@ localStorage.setItem("newReward", false);
 	//If the fields have been filled
 	if (description.value.length != 0 && discountAmount.value.length != 0 && costOfPoints.value.length != 0)
 	{
-		localStorage.setItem("newReward", true);
+		localStorage.setItem("newReward", "true");
 	}
-
-submit.addEventListener('click', function () {
+	
 	window.location.href = "login.html";
 });
