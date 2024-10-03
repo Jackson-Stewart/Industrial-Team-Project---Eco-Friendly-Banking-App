@@ -17,7 +17,11 @@ async function parseJSONObject(type, callType) {
     // Call API, get requested content and change into JSON object
     let userObject = '';
     return new Promise((resolve, reject) => {
-        const apiUrl = url + "/api/"+ callType + extension;
+        let apiUrl = ""
+        if (callType === "checkStreak")
+            { apiUrl = url + "/api/"+ callType + "/" + localStorage.getItem('accountNumber'); }
+        else
+            { apiUrl = url + "/api/"+ callType + extension; }
         console.log(apiUrl);
         fetch(apiUrl, {
             cache: 'no-cache',
@@ -28,6 +32,7 @@ async function parseJSONObject(type, callType) {
                 if(type ==="POST") {
 
                     userObject = data;
+                    console.log(data);
                 }
                 else {
                     userObject = data[0];
@@ -50,7 +55,7 @@ async function updateGreenScore(amount, accountNumberFrom, rag) {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log("Green score response: " + data[0]);
+                console.log("Green score response: " + data);
                 userObject = data;
                 resolve(userObject);
             })
@@ -98,9 +103,11 @@ button.onclick = async function sendMoneyClick() {
                 + greenscore +"/"
                 + referenceInput.value;
     const object = await parseJSONObject("POST", "transactions");
+    const ob = await parseJSONObject("POST", "checkStreak"); // Ensure streaks 
+    localStorage.setItem("checkStreakGreen", ob);
     const updateScore = updateGreenScore(amountInput, localStorage.getItem("accountNumber"), greenscore);
     extension = "/"+localStorage.getItem("accountNumber");
-    const ob = parseJSONObject("POST", "checkStreak");
+    
     // Upon returning to home page, do a delay on showing of green level to simulate analysis
     localStorage.setItem("delayShowingLevel", "True");
 
