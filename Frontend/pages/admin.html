@@ -29,5 +29,23 @@
             <button name="submit" id="submit" class="btn btn-primary mt-4 mx-auto rounded-md w-max flex gap-x-1.5 items-center">Submit</button>
         </div>
     </div>
+
+
+    <script>
+        
+             //Passing the input values to a local storage once the admin click submit
+            var description = document.getElementById("description");
+            var discountAmount = document.getElementById("discountAmount");
+            var costOfPoints = document.getElementById("costOfPoints");
+    
+    
+            submit.addEventListener('click', function() {
+            	localStorage.setItem("description", description.value);
+            	localStorage.setItem("discountAmount", discountAmount.value);
+            	localStorage.setItem("costOfPoints", costOfPoints.value);
+            	window.location.href = "rewards.html";
+        });
+                
+    </script>
 </body>
 </html>
