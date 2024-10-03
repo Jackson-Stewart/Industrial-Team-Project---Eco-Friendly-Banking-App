@@ -7,6 +7,7 @@ var targetGreenScore = document.getElementsByClassName('greenScore');
 var targetLevel = document.getElementsByClassName('currentLevel');
 var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNextLevel");
 var targetLevelBar = document.getElementsByClassName('levelBar');
+var targetStreakLevel = document.getElementsByClassName('streakLevel');
 
 var getExtension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
@@ -67,6 +68,7 @@ async function refreshRewardsPage() {
     targetNumber[0].innerText = "Account number: " + accountObject.accountNumber; // Change account number within the document
     //targetGreenScore[0].innerText = accountObject.currentGreenScore;
     let values = calculateLevel(accountObject.currentGreenScore);
+    targetStreakLevel[0].innerText = localStorage['streak'];
 
     targetLevel[0].innerText = values[0];
     targetLevelBar[0].classList.add('w-['+values[2]+'%]')

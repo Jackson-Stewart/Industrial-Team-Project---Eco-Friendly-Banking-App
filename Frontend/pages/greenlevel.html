@@ -94,12 +94,12 @@
         </div>
     
     
-        <div class="container mt-8 lg:mx-auto lg:w-1/2">
+        <div class="container mt-4 mb-8 lg:mx-auto lg:w-1/2">
             <div class="rounded-lg">
                 <div>
                     <a href="home.html" class="text-primary flex items-center hover:underline"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></svg>Back</a>
                 </div>
-                <div class="py-4 bg-white rounded-lg h-[130px] mt-8 shadow-lg">
+                <div class="py-4 bg-white rounded-lg mt-4 shadow-lg">
                     <div class="mx-4">
                         <div class="flex items-center mb-4">
                             <h4 class="font-semibold text-lg">Current Green Level: <span class="currentLevel"></span></h4>
@@ -111,6 +111,12 @@
                         </div>
                         <div class="flex items-center ">
                             <h4 class="text-lg">To reach level <span class="nextLevel font-semibold"></span> you need <span class="pointsRemainingToNextLevel font-semibold"></span> points</h4>
+                        </div>
+                        <div class="flex items-center mt-5"></div>
+                            <h4 class="text-lg">You are currently on a streak of <span class="streakLevel font-semibold"></span>. </br>Streaks give a multiplier to any 
+                                new points you accrue by (current streak + 1).</br>To increase your streak, make three consecutive green purchases in a row.
+                                </br>However if you make three red purchases in a row, a penalty of 100 points is deducted from your current points.
+                            </h4> 
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,8 @@ var targetPointsRemaining = document.getElementsByClassName("pointsRemainingToNe
 var targetLevels = document.getElementsByClassName("currentLevel");
 var targetTransactions = document.getElementById("latestTransactions");
 var targetLevelBar = document.getElementsByClassName('levelBar');
+var targetStreakNumber = document.getElementsByClassName('streak');
+var targetStreakUpdate = document.getElementsByClassName("streakUpdate");
 var extension = "";
 if (localStorage.getItem("accountNumber") != "undefined") {
     extension = "?accountNumber=" + localStorage.getItem("accountNumber");
@@ -236,25 +238,28 @@ async function refreshHomePage() {
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
     targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
+    console.log(object);
 
     let values = calculateLevel(object.currentGreenScore);
-    
     // If a transaction has just been made, make a delay to simulate analysis
     if (localStorage.getItem("delayShowingLevel") === "True")
     {
         targetLevels[0].innerText = "Loading...";
         targetLevelBar[0].classList.add('w-[0%]')
-
+        targetStreakNumber[0].classList.add('animate-slide-down')
+        targetStreakNumber[0].innerText = "Loading...";
+        
         setTimeout(() => {
             showLevelDetails(values);
+            updateStreak(object.currentStreak);
+            localStorage.setItem("delayShowingLevel", "False");
           }, "3000");
-
-        localStorage.setItem("delayShowingLevel", "False");
     }
     else
     {
         // Calculate current level and points remaining until next level
         showLevelDetails(values);
+        updateStreak(object.currentStreak);
     }
 }
 
@@ -284,4 +289,32 @@ function sortTransactionsByDate(transactions) {
 
         return dateB - dateA;
     });
+}
+
+// Update streak number
+function updateStreak(value) {
+    targetStreakNumber[0].innerText = value;
+
+    if (localStorage.getItem("delayShowingLevel") === "True")
+    {
+        // If checkGreenStreak is true and value != 3
+        if (localStorage.getItem("checkStreakGreen") === "true" && value !== 3) {
+            console.log("+1 streak");
+            targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-green-700");
+            targetStreakUpdate[0].innerText = "+1"
+
+            // If checkGreenStreak is false and value is not 0        
+        } else if (localStorage.getItem("checkStreakGreen") === "-1") {
+            console.log("Penalty");
+            targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-red-700");
+            targetStreakUpdate[0].innerText = "-100 points"
+        
+        } else if (localStorage.getItem("checkStreakGreen") === "false" && localStorage['streak'] !== 0) {
+            console.log("Streak reset");
+            targetStreakUpdate[0].classList.add("animated", "fadeOutUp", "text-red-700");
+            targetStreakUpdate[0].innerText = "Reset"
+        // If checkGreenStreak is -1, penalty
+        }
+    }
+    localStorage.setItem("streak", value);
 }
