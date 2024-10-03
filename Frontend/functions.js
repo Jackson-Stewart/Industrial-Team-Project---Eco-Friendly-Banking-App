@@ -226,6 +226,10 @@ async function refreshHomePage() {
             console.log('New transaction received:', data[0]);
             if(data[0].accountTo === localStorage["accountNumber"]) { //check transaction is being sent to this user
                 addTransactionToList(data[0], true);
+                var currentBalance = parseFloat(targetBalance[0].innerText.substring(1));
+                console.log(currentBalance);
+                console.log(data[0].moneyTransferred);
+                targetBalance[0].innerText = "£" + (currentBalance + data[0].moneyTransferred).toFixed(2);
             }
         };
 
@@ -238,7 +242,7 @@ async function refreshHomePage() {
 
     targetName[0].innerText = object.name; // Change name within the document
     targetNumber[0].innerText = "Account number: " + object.accountNumber; // Change account number within the document
-    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);; // Change balance within the document
+    targetBalance[0].innerText = "£" + (Math.round(object.amountOfMoney * 100) / 100).toFixed(2);// Change balance within the document
     console.log(object);
 
     let values = calculateLevel(object.currentGreenScore);
