@@ -192,11 +192,8 @@
                 dialog.dataset.rewardType = 'Cash';
             }
 
-            console.log(parseInt(points));
-            console.log(parseInt(currentGreenScore[0].innerHTML));
             if (parseInt(points) > parseInt(currentGreenScore[0].innerHTML)){
                 redeemButton.disabled = true;
-                console.log('Disabling button');
             } else {
                 redeemButton.disabled = false;
             }
@@ -214,6 +211,8 @@
             const page_mask = document.getElementById('page_mask');
             dialog.classList.add('hidden');
             page_mask.classList.add('hidden');
+
+            redeemed_text.classList.add('hidden');
         }
 
         function changeView(i){
@@ -268,10 +267,18 @@
                 .then((response) => response.json())
                 .then((data) => {
                     userObject = data;
+
+                    const currentGreenScore = document.getElementsByClassName('greenScore');
+                    var newGreenScore = parseInt(currentGreenScore[0].innerHTML) - parseInt(pointsCost);
+                    currentGreenScore[0].innerHTML = newGreenScore;
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+
+
                     resolve(userObject);
                 })
-
-                location.reload();
             })
         }
      </script>
